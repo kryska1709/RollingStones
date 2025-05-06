@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "905316902743",
+    "project_id": "rolling-stones-645ac",
+    "storage_bucket": "rolling-stones-645ac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905316902743:android:b81c99631b7e6e528fc012",
+        "android_client_info": {
+          "package_name": "com.example.rollingstones"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsKsK-sqJNnzTen8fk2zx_zc5IpgHDw9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
