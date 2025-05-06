@@ -22,7 +22,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.rollingstones.R
 import com.example.rollingstones.ui.theme.Blues
-import com.example.rollingstones.ui.theme.DarkPurple
 import com.example.rollingstones.ui.theme.MyPurple
 
 @Composable
@@ -59,9 +58,9 @@ fun PasswordView(
                 Icon(
                     painter = painterResource(
                         id = if (isPasswordVisible)
-                            R.drawable.eye_visible
-                        else
                             R.drawable.eye_not_visible
+                        else
+                            R.drawable.eye_visible
                     ),
                     contentDescription = null,
                     tint = MyPurple

@@ -3,12 +3,14 @@ package com.example.rollingstones.view
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +26,7 @@ import com.example.rollingstones.components.PasswordView
 import com.example.rollingstones.naviigation.Screen
 import com.example.rollingstones.ui.theme.BluDark
 import com.example.rollingstones.ui.theme.BluLight
+import com.example.rollingstones.ui.theme.MyPurple
 
 
 @Composable
@@ -61,6 +64,13 @@ fun AuthView(
                 text = "войти"
             )
         }
-        CustomTextButton(navController)
+        TextButton(
+            onClick = {navController.navigate(Screen.RegScreen.route)}
+        ) {
+            Text(
+                text = "Нет аккаунта? Зарегистрироваться",
+                color = MyPurple
+            )
+        }
     }
 }
