@@ -6,40 +6,44 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.rollingstones.view.AuthView
 import com.example.rollingstones.view.HomeView
+import com.example.rollingstones.view.LoadingView
+import com.example.rollingstones.view.ProfilView
 import com.example.rollingstones.view.RegView
+import com.example.rollingstones.viewmodel.AuthViewModel
 
 @Composable
 fun NavigationGraph(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    authViewModel: AuthViewModel
 ){
     NavHost(
         navController = navHostController,
-        startDestination = Screen.AuthScreen.route
+        startDestination = Screen.LoadingScreen.route
     ){
         composable(
             route = Screen.AuthScreen.route
         ){
-            AuthView(navHostController)
+            AuthView(navHostController, authViewModel)
         }
         composable(
             route = Screen.RegScreen.route
         ){
-            RegView(navHostController)
+            RegView(navHostController, authViewModel)
         }
         composable(
             route = Screen.LoadingScreen.route
         ){
-
+            LoadingView(navHostController,authViewModel)
         }
         composable(
             route = Screen.UserHomeScreen.route
         ){
-            HomeView(navHostController)
+            HomeView(navHostController,authViewModel)
         }
         composable(
             route = Screen.UserSettingsScreen.route
         ){
-
+            ProfilView(navHostController,authViewModel)
         }
         composable(
             route = Screen.AdminHomeScreen.route

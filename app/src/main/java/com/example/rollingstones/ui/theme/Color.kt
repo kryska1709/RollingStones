@@ -1,5 +1,6 @@
 package com.example.rollingstones.ui.theme
 
+import android.hardware.lights.Light
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -15,3 +16,5 @@ val BluDark = Color(0xFF00BFFF)
 val MyPurple = Color(0xFF8A2BE2)
 val DarkPurple = Color(0xFF4B0082)
 val Blues = Color(0xFFADD8E6)
+val StrangeViolet = Color(0xFF06200EA)
+val MediumPurple = Color(0xFF9370DB)

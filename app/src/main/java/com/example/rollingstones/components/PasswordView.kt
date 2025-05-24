@@ -17,12 +17,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.rollingstones.R
-import com.example.rollingstones.ui.theme.Blues
+import com.example.rollingstones.ui.theme.BluDark
 import com.example.rollingstones.ui.theme.MyPurple
+import com.example.rollingstones.ui.theme.StrangeViolet
 
 @Composable
 fun PasswordView(
@@ -38,13 +40,15 @@ fun PasswordView(
         label = {
             Text(
                 text = labelName,
-                color = MyPurple
+                color = StrangeViolet,
+                fontWeight = FontWeight.SemiBold
             )
         },
         placeholder = {
             Text(
                 text = example,
-                color = MyPurple
+                color = Color.Blue.copy(0.8f),
+                fontWeight = FontWeight.Bold
             )
         },
         modifier = Modifier
@@ -69,9 +73,11 @@ fun PasswordView(
         },
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color.White,
-            unfocusedTextColor = MyPurple,
-            focusedContainerColor = Blues,
-            focusedTextColor = MyPurple,
+            unfocusedTextColor = Color.Blue,
+            focusedContainerColor = Color.White,
+            focusedTextColor = BluDark,
+            focusedIndicatorColor = Color.Blue,
+            unfocusedIndicatorColor = Color.Blue.copy(1.4f)
         ),
         visualTransformation = if (isPasswordVisible)
             VisualTransformation.None
