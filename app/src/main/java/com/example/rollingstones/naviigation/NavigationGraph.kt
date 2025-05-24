@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.rollingstones.view.AuthView
 import com.example.rollingstones.view.HomeView
+import com.example.rollingstones.view.InfoView
 import com.example.rollingstones.view.LoadingView
 import com.example.rollingstones.view.ProfilView
 import com.example.rollingstones.view.RegView
@@ -49,6 +50,11 @@ fun NavigationGraph(
             route = Screen.AdminHomeScreen.route
         ){
 
+        }
+        composable(
+            route = Screen.InfoScreen.route
+        ) {
+            InfoView(navHostController)
         }
     }
 }

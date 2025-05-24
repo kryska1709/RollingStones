@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.rollingstones.naviigation.Screen
-import com.example.rollingstones.ui.theme.BluLight
+import com.example.rollingstones.ui.theme.ThirdColor
 import com.example.rollingstones.viewmodel.AuthViewModel
 import kotlinx.coroutines.delay
 
@@ -32,7 +32,7 @@ fun LoadingView(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
-        CircularProgressIndicator(color = BluLight)
+        CircularProgressIndicator(color = ThirdColor)
 
     }
 }

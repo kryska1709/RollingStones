@@ -18,15 +18,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.rollingstones.components.FormView
 import com.example.rollingstones.components.PasswordView
 import com.example.rollingstones.naviigation.Screen
-import com.example.rollingstones.ui.theme.BluDark
-import com.example.rollingstones.ui.theme.BluLight
-import com.example.rollingstones.ui.theme.MyPurple
+import com.example.rollingstones.ui.theme.FourthColor
+import com.example.rollingstones.ui.theme.MainColor
+import com.example.rollingstones.ui.theme.SecondColor
+import com.example.rollingstones.ui.theme.ThirdColor
 import com.example.rollingstones.viewmodel.AuthViewModel
 
 
@@ -68,11 +71,13 @@ fun AuthView(
                 }
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = if(enabled.value) BluDark else BluLight
+                containerColor = if(enabled.value) ThirdColor else ThirdColor.copy(alpha = 0.7f)
             )
         ){
             Text(
-                text = "войти"
+                text = "войти",
+                color = Color.White,
+                fontSize = 16.sp
             )
         }
         Row(
@@ -81,14 +86,16 @@ fun AuthView(
         ) {
             Text(
                 text = "Нет аккаунта?",
-                color = BluDark
+                fontSize = 16.sp,
+                color = FourthColor
             )
             TextButton(
                 onClick = { navController.navigate(Screen.RegScreen.route) }
             ) {
                 Text(
                     text = "Зарегистрироваться",
-                    color = MyPurple
+                    fontSize = 16.sp,
+                    color = SecondColor
                 )
             }
         }
