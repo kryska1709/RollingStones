@@ -11,9 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.rollingstones.ui.theme.FourthColor
-import com.example.rollingstones.ui.theme.SecondColor
-import com.example.rollingstones.ui.theme.ThirdColor
+import com.example.rollingstones.ui.theme.DarkButtonColor
 
 @Composable
 fun FormView(
@@ -33,14 +31,14 @@ fun FormView(
         },
         placeholder = { Text (
             text=example,
-            color = ThirdColor.copy(alpha = 1.5f),
+            color = DarkButtonColor.copy(alpha = 1.5f),
             fontWeight = FontWeight.SemiBold
         ) },
         modifier = Modifier.padding(horizontal = 18.dp, vertical = 10.dp)
             .fillMaxWidth(),
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color.White,
-            unfocusedTextColor = ThirdColor,
+            unfocusedTextColor = DarkButtonColor,
             focusedContainerColor = Color.White,
             focusedTextColor = Color.Blue,
             focusedIndicatorColor = Color.Blue,

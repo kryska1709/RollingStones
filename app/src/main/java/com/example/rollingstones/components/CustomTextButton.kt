@@ -10,7 +10,7 @@ import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.text.withStyle
 import androidx.navigation.NavController
 import com.example.rollingstones.naviigation.Screen
-import com.example.rollingstones.ui.theme.ThirdColor
+import com.example.rollingstones.ui.theme.DarkButtonColor
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -19,7 +19,7 @@ fun CustomTextButton(
 ){
     val annotatedString = buildAnnotatedString {
         append("Нет аккаунта?")
-        withAnnotation("reg","registration"){ withStyle(style = SpanStyle(ThirdColor)){append(" зарегистрироваться")}}
+        withAnnotation("reg","registration"){ withStyle(style = SpanStyle(DarkButtonColor)){append(" зарегистрироваться")}}
     }
     TextButton(
         onClick = {

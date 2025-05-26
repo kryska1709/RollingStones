@@ -25,9 +25,9 @@ import androidx.navigation.NavController
 import com.example.rollingstones.components.FormView
 import com.example.rollingstones.naviigation.Screen
 import com.example.rollingstones.ui.theme.BackGround
-import com.example.rollingstones.ui.theme.FourthColor
+import com.example.rollingstones.ui.theme.LightButtonColor
 import com.example.rollingstones.ui.theme.MainColor
-import com.example.rollingstones.ui.theme.ThirdColor
+import com.example.rollingstones.ui.theme.DarkButtonColor
 import com.example.rollingstones.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,7 +69,7 @@ fun HomeView(
                     navController.navigate(Screen.AuthScreen.route)
                     Toast.makeText(context,"Вы вышли из аккаунта", Toast.LENGTH_SHORT).show()
                 },
-                colors = ButtonDefaults.buttonColors(FourthColor)
+                colors = ButtonDefaults.buttonColors(LightButtonColor)
             ) {
                 Text(
                     text = "выйти"
@@ -84,7 +84,7 @@ fun HomeView(
                     navController.navigate(Screen.AuthScreen.route)
                     Toast.makeText(context, "Аккаунт удалён", Toast.LENGTH_SHORT).show()
                 },
-                colors = ButtonDefaults.buttonColors(ThirdColor)
+                colors = ButtonDefaults.buttonColors(DarkButtonColor)
             ) {
                 Text(
                     text = "удалить аккаунт"
@@ -112,7 +112,7 @@ fun HomeView(
                         onClick = {
                             enabledReserve.value = !enabledReserve.value
                         },
-                        colors = ButtonDefaults.buttonColors(FourthColor)
+                        colors = ButtonDefaults.buttonColors(LightButtonColor)
                     ) {
                         Text(
                             text = "забронировать"
@@ -124,7 +124,7 @@ fun HomeView(
                         onClick = {
                             enabledReserve.value = !enabledReserve.value
                         },
-                        colors = ButtonDefaults.buttonColors(FourthColor)
+                        colors = ButtonDefaults.buttonColors(LightButtonColor)
                     ) {
                         Text(
                             text = "отмена"

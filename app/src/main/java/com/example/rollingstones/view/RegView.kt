@@ -26,9 +26,9 @@ import androidx.navigation.NavController
 import com.example.rollingstones.components.FormView
 import com.example.rollingstones.components.PasswordView
 import com.example.rollingstones.naviigation.Screen
-import com.example.rollingstones.ui.theme.FourthColor
+import com.example.rollingstones.ui.theme.LightButtonColor
 import com.example.rollingstones.ui.theme.MainColor
-import com.example.rollingstones.ui.theme.ThirdColor
+import com.example.rollingstones.ui.theme.DarkButtonColor
 import com.example.rollingstones.viewmodel.AuthViewModel
 
 @Composable
@@ -81,7 +81,7 @@ fun RegView(
                 }
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = if(enabled.value) ThirdColor else ThirdColor.copy(alpha = 1.5f)
+                containerColor = if(enabled.value) DarkButtonColor else DarkButtonColor.copy(alpha = 1.5f)
             )
         ){
             Text(
@@ -96,7 +96,7 @@ fun RegView(
         ) {
             Text(
                 text = "Есть аккаунт?",
-                color = FourthColor,
+                color = LightButtonColor,
                 fontSize = 16.sp
             )
             TextButton(

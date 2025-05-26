@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
@@ -23,6 +24,7 @@ import androidx.navigation.NavController
 import com.example.rollingstones.R
 import com.example.rollingstones.naviigation.Screen
 import com.example.rollingstones.ui.theme.BackGround
+import com.example.rollingstones.ui.theme.DarkButtonColor
 import com.example.rollingstones.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
@@ -56,25 +58,26 @@ fun SideBarMenu(
                         painter = painterResource(R.drawable.logo),
                         contentDescription = null
                     )
-                    RowSideBarMenu("Главная",R.drawable.webpagehome_85808) {
+                    RowSideBarMenu("Главная",R.drawable.webpagehome_85808, DarkButtonColor) {
                         navController.navigate(Screen.UserHomeScreen.route)
                         scope.launch {
                             drawerState.close()
                         }
                     }
-                    RowSideBarMenu("Профиль",R.drawable.settings_user_profile_icon_188630) {
+                    RowSideBarMenu("Профиль",R.drawable.settings_user_profile_icon_188630, DarkButtonColor) {
                         navController.navigate(Screen.UserSettingsScreen.route)
                         scope.launch {
                             drawerState.close()
                         }
                     }
-                    RowSideBarMenu("О нас",R.drawable.inform_icon_icons_com_67949) {
+                    RowSideBarMenu("О нас",R.drawable.inform_icon_icons_com_67949, DarkButtonColor) {
                         navController.navigate(Screen.InfoScreen.route)
                         scope.launch {
                             drawerState.close()
                         }
                     }
-                    RowSideBarMenu("выйти", R.drawable.cancel_close_delete) {
+                    Spacer(Modifier.weight(1f))
+                    RowSideBarMenu("выйти", R.drawable.cancel_close_delete, Color.Red) {
                         authViewModel.signOut()
                         navController.navigate(Screen.AuthScreen.route)
                     }

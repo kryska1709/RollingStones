@@ -8,20 +8,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.rollingstones.ui.theme.MainColor
-import com.example.rollingstones.ui.theme.SecondColor
-import com.example.rollingstones.ui.theme.ThirdColor
-import java.nio.file.WatchEvent
+import com.example.rollingstones.ui.theme.DarkButtonColor
 
 @Composable
 fun RowSideBarMenu(
     text: String,
     icon: Int,
+    color: Color,
     action: () -> Unit
 ) {
     Row(
@@ -29,18 +29,19 @@ fun RowSideBarMenu(
             .clickable { action() }
             .padding(top = 15.dp, bottom = 15.dp, start = 15.dp)
     ) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = null,
+            modifier = Modifier.size(30.dp)
+                .align(Alignment.CenterVertically),
+            tint = color
+        )
         Text(
             text = text,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = ThirdColor,
-            modifier = Modifier.padding(12.dp)
-        )
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = null,
-            modifier = Modifier.size(30.dp),
-            tint = SecondColor
+            color = DarkButtonColor,
+            modifier = Modifier.padding(10.dp)
         )
     }
 }

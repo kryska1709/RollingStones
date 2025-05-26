@@ -26,10 +26,9 @@ import androidx.navigation.NavController
 import com.example.rollingstones.components.FormView
 import com.example.rollingstones.components.PasswordView
 import com.example.rollingstones.naviigation.Screen
-import com.example.rollingstones.ui.theme.FourthColor
-import com.example.rollingstones.ui.theme.MainColor
+import com.example.rollingstones.ui.theme.LightButtonColor
 import com.example.rollingstones.ui.theme.SecondColor
-import com.example.rollingstones.ui.theme.ThirdColor
+import com.example.rollingstones.ui.theme.DarkButtonColor
 import com.example.rollingstones.viewmodel.AuthViewModel
 
 
@@ -71,7 +70,7 @@ fun AuthView(
                 }
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = if(enabled.value) ThirdColor else ThirdColor.copy(alpha = 0.7f)
+                containerColor = if(enabled.value) DarkButtonColor else DarkButtonColor.copy(alpha = 0.7f)
             )
         ){
             Text(
@@ -87,7 +86,7 @@ fun AuthView(
             Text(
                 text = "Нет аккаунта?",
                 fontSize = 16.sp,
-                color = FourthColor
+                color = LightButtonColor
             )
             TextButton(
                 onClick = { navController.navigate(Screen.RegScreen.route) }

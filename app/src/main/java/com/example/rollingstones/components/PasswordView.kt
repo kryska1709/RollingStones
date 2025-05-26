@@ -23,8 +23,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.rollingstones.R
 import com.example.rollingstones.ui.theme.MainColor
-import com.example.rollingstones.ui.theme.SecondColor
-import com.example.rollingstones.ui.theme.ThirdColor
+import com.example.rollingstones.ui.theme.DarkButtonColor
 
 @Composable
 fun PasswordView(
@@ -47,7 +46,7 @@ fun PasswordView(
         placeholder = {
             Text(
                 text = example,
-                color = ThirdColor.copy(alpha = 1.5f),
+                color = DarkButtonColor.copy(alpha = 1.5f),
                 fontWeight = FontWeight.Bold
             )
         },
@@ -73,7 +72,7 @@ fun PasswordView(
         },
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color.White,
-            unfocusedTextColor = ThirdColor,
+            unfocusedTextColor = DarkButtonColor,
             focusedContainerColor = Color.White,
             focusedTextColor = Color.Blue,
             focusedIndicatorColor = Color.Blue,
