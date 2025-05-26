@@ -55,7 +55,7 @@ fun SideBarMenu(
                         .width(width)
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.logo),
+                        painter = painterResource(R.drawable.logorolling),
                         contentDescription = null
                     )
                     RowSideBarMenu("Главная",R.drawable.webpagehome_85808, DarkButtonColor) {

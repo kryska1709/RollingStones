@@ -2,12 +2,15 @@ package com.example.rollingstones.view
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -20,17 +23,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.rollingstones.components.FormView
 import com.example.rollingstones.components.PasswordView
 import com.example.rollingstones.naviigation.Screen
+import com.example.rollingstones.ui.theme.BackGround
 import com.example.rollingstones.ui.theme.LightButtonColor
 import com.example.rollingstones.ui.theme.SecondColor
 import com.example.rollingstones.ui.theme.DarkButtonColor
+import com.example.rollingstones.ui.theme.MainColor
 import com.example.rollingstones.viewmodel.AuthViewModel
-
 
 @Composable
 fun AuthView(
@@ -38,64 +43,51 @@ fun AuthView(
     authViewModel: AuthViewModel
 ) {
     val context = LocalContext.current
-    val email = remember {mutableStateOf("")}
+    val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val enabled = remember { derivedStateOf { email.value.isNotEmpty()&&password.value.isNotEmpty() } }
+    val enabled = remember { derivedStateOf { email.value.isNotEmpty() && password.value.isNotEmpty() } }
+
     Column(
         modifier = Modifier
-            .imePadding()
             .fillMaxSize()
-            .padding(10.dp),
+            .background(BackGround)
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        FormView(email,"электронная почта","ivanovivan11@gmail.com")
-        PasswordView(password,"пароль","12345678")
+    ) {
+        FormView(email, "электронная почта", "ivanovivan11@gmail.com")
+        PasswordView(password, "пароль", "12345678")
 
         Button(
             onClick = {
                 if (enabled.value) {
-                    authViewModel.auth(email.value,password.value){succes,errorMessage ->
-                        if(succes) {
+                    authViewModel.auth(email.value, password.value) { success, errorMessage ->
+                        if (success) {
                             navController.navigate(Screen.UserHomeScreen.route)
-                            Toast.makeText(context,"авторизация успешна", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "авторизация успешна", Toast.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(context,"ошибка авторизации", Toast.LENGTH_SHORT).show()
-                            Log.e("auth error",errorMessage.toString())
+                            Toast.makeText(context, "ошибка авторизации", Toast.LENGTH_SHORT).show()
                         }
                     }
-
-                } else{
-                    Toast.makeText(context,"заполните все поля", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "заполните все поля", Toast.LENGTH_SHORT).show()
                 }
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = if(enabled.value) DarkButtonColor else DarkButtonColor.copy(alpha = 0.7f)
-            )
-        ){
-            Text(
-                text = "войти",
-                color = Color.White,
-                fontSize = 16.sp
-            )
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(3.dp)
+                containerColor = if (enabled.value) DarkButtonColor else DarkButtonColor.copy(alpha = 0.5f)
+            ),
+            modifier = Modifier.padding(vertical = 12.dp)
         ) {
-            Text(
-                text = "Нет аккаунта?",
-                fontSize = 16.sp,
-                color = LightButtonColor
-            )
-            TextButton(
-                onClick = { navController.navigate(Screen.RegScreen.route) }
-            ) {
-                Text(
-                    text = "Зарегистрироваться",
-                    fontSize = 16.sp,
-                    color = SecondColor
-                )
+            Text("войти", color = Color.White, fontSize = 16.sp)
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text("Нет аккаунта?", color = Color.Blue, fontSize = 16.sp, modifier = Modifier.align(
+                Alignment.CenterVertically), fontWeight = FontWeight.Bold)
+            TextButton(onClick = { navController.navigate(Screen.RegScreen.route) }) {
+                Text("Зарегистрироваться", color = SecondColor, fontSize = 16.sp, modifier = Modifier.align(
+                    Alignment.CenterVertically),fontWeight = FontWeight.Bold)
             }
         }
     }
