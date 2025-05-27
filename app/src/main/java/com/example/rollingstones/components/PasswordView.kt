@@ -40,7 +40,6 @@ fun PasswordView(
             Text(
                 text = labelName,
                 color = Color.Blue,
-                fontWeight = FontWeight.SemiBold
             )
         },
         placeholder = {
@@ -50,12 +49,10 @@ fun PasswordView(
                 fontWeight = FontWeight.Bold
             )
         },
-        modifier = Modifier
-            .padding(horizontal = 18.dp, vertical = 10.dp)
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         trailingIcon = {
             IconButton(
-                modifier = Modifier.size(30.dp),
+                modifier = Modifier.size(25.dp),
                 onClick = { isPasswordVisible = !isPasswordVisible }
             ) {
                 Icon(

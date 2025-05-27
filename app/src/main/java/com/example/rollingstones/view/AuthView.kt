@@ -4,9 +4,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -45,49 +48,79 @@ fun AuthView(
     val context = LocalContext.current
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val enabled = remember { derivedStateOf { email.value.isNotEmpty() && password.value.isNotEmpty() } }
-
-    Column(
+    val enabled =
+        remember { derivedStateOf { email.value.isNotEmpty() && password.value.isNotEmpty() } }
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(BackGround)
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .imePadding()
     ) {
-        FormView(email, "электронная почта", "ivanovivan11@gmail.com")
-        PasswordView(password, "пароль", "12345678")
-
-        Button(
-            onClick = {
-                if (enabled.value) {
-                    authViewModel.auth(email.value, password.value) { success, errorMessage ->
-                        if (success) {
-                            navController.navigate(Screen.UserHomeScreen.route)
-                            Toast.makeText(context, "авторизация успешна", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(context, "ошибка авторизации", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } else {
-                    Toast.makeText(context, "заполните все поля", Toast.LENGTH_SHORT).show()
-                }
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = if (enabled.value) DarkButtonColor else DarkButtonColor.copy(alpha = 0.5f)
-            ),
-            modifier = Modifier.padding(vertical = 12.dp)
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("войти", color = Color.White, fontSize = 16.sp)
-        }
+            Text(
+                text = "Авторизация",
+                fontSize = 24.sp,
+                color = Color.Blue,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Start)
+            )
+            FormView(email, "электронная почта", "ivanovivan11@gmail.com")
+            PasswordView(password, "пароль", "12345678")
 
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text("Нет аккаунта?", color = Color.Blue, fontSize = 16.sp, modifier = Modifier.align(
-                Alignment.CenterVertically), fontWeight = FontWeight.Bold)
-            TextButton(onClick = { navController.navigate(Screen.RegScreen.route) }) {
-                Text("Зарегистрироваться", color = SecondColor, fontSize = 16.sp, modifier = Modifier.align(
-                    Alignment.CenterVertically),fontWeight = FontWeight.Bold)
+            Button(
+                onClick = {
+                    if (enabled.value) {
+                        authViewModel.auth(email.value, password.value) { success, errorMessage ->
+                            if (success) {
+                                navController.navigate(Screen.UserHomeScreen.route)
+                                Toast.makeText(context, "авторизация успешна", Toast.LENGTH_SHORT)
+                                    .show()
+                            } else {
+                                Toast.makeText(context, "ошибка авторизации", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(context, "заполните все поля", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (enabled.value) DarkButtonColor else DarkButtonColor.copy(
+                        alpha = 0.5f
+                    )
+                )
+            ) {
+                Text("войти", color = Color.White, fontSize = 16.sp)
+            }
+
+            Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                Text(
+                    "Нет аккаунта?",
+                    color = Color.Blue,
+                    fontSize = 16.sp,
+                    modifier = Modifier.align(
+                        Alignment.CenterVertically
+                    ),
+                    fontWeight = FontWeight.Bold
+                )
+                TextButton(onClick = { navController.navigate(Screen.RegScreen.route) }) {
+                    Text(
+                        "Зарегистрироваться",
+                        color = SecondColor,
+                        fontSize = 16.sp,
+                        modifier = Modifier.align(
+                            Alignment.CenterVertically
+                        ),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }

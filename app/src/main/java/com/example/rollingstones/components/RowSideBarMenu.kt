@@ -32,13 +32,13 @@ fun RowSideBarMenu(
         Icon(
             painter = painterResource(icon),
             contentDescription = null,
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier.size(25.dp)
                 .align(Alignment.CenterVertically),
             tint = color
         )
         Text(
             text = text,
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             color = DarkButtonColor,
             modifier = Modifier.padding(10.dp)

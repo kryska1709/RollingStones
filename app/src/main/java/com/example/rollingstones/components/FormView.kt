@@ -25,8 +25,7 @@ fun FormView(
         label = {
             Text(
                 text = labelName,
-                color = Color.Blue,
-                fontWeight = FontWeight.SemiBold
+                color = Color.Blue
             )
         },
         placeholder = { Text (
@@ -34,8 +33,7 @@ fun FormView(
             color = DarkButtonColor.copy(alpha = 1.5f),
             fontWeight = FontWeight.SemiBold
         ) },
-        modifier = Modifier.padding(horizontal = 18.dp, vertical = 10.dp)
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color.White,
             unfocusedTextColor = DarkButtonColor,

@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.rollingstones.ui.theme.BackGround
+import com.example.rollingstones.ui.theme.Bibliothy
 import com.example.rollingstones.ui.theme.MainColor
 
 @Composable
@@ -49,7 +50,8 @@ fun InfoView(
                     "" +
                     "Мы гарантируем вам море положительных эмоций и незабываемые впечатления!",
             fontSize = 20.sp,
-            color = MainColor
+            color = MainColor,
+            fontFamily = Bibliothy
         )
     }
 }

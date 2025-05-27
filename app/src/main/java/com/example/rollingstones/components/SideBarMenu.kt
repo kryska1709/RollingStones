@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -20,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.rollingstones.R
 import com.example.rollingstones.naviigation.Screen
@@ -58,28 +62,40 @@ fun SideBarMenu(
                         painter = painterResource(R.drawable.logorolling),
                         contentDescription = null
                     )
-                    RowSideBarMenu("Главная",R.drawable.webpagehome_85808, DarkButtonColor) {
+                    RowSideBarMenu("Главная",R.drawable.house, DarkButtonColor) {
                         navController.navigate(Screen.UserHomeScreen.route)
                         scope.launch {
                             drawerState.close()
                         }
                     }
-                    RowSideBarMenu("Профиль",R.drawable.settings_user_profile_icon_188630, DarkButtonColor) {
+                    RowSideBarMenu("Профиль",R.drawable.person_crop_circle, DarkButtonColor) {
                         navController.navigate(Screen.UserSettingsScreen.route)
                         scope.launch {
                             drawerState.close()
                         }
                     }
-                    RowSideBarMenu("О нас",R.drawable.inform_icon_icons_com_67949, DarkButtonColor) {
+                    RowSideBarMenu("О нас",R.drawable.info_circle, DarkButtonColor) {
                         navController.navigate(Screen.InfoScreen.route)
                         scope.launch {
                             drawerState.close()
                         }
                     }
                     Spacer(Modifier.weight(1f))
-                    RowSideBarMenu("выйти", R.drawable.cancel_close_delete, Color.Red) {
-                        authViewModel.signOut()
-                        navController.navigate(Screen.AuthScreen.route)
+                    TextButton(
+                        onClick = {
+                            authViewModel.signOut()
+                            navController.navigate(Screen.AuthScreen.route)
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
+                    ) {
+                        Text(
+                            text = "Выйти из аккаунта",
+                            fontSize = 18.sp,
+                            color = DarkButtonColor,
+                            modifier = Modifier.padding(bottom = 20.dp, start = 15.dp)
+                            )
                     }
                 }
             }

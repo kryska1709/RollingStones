@@ -28,6 +28,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.rollingstones.components.SideBarMenu
 import com.example.rollingstones.naviigation.NavigationGraph
+import com.example.rollingstones.ui.theme.Bibliothy
 import com.example.rollingstones.ui.theme.MainColor
 import com.example.rollingstones.ui.theme.RollingStonesTheme
 import com.example.rollingstones.viewmodel.AuthViewModel
@@ -54,6 +55,7 @@ class MainActivity : ComponentActivity() {
                                     text = "Rolling Stones",
                                     color = Color.White,
                                     fontSize = 34.sp,
+                                    fontFamily = Bibliothy,
                                     fontWeight = FontWeight.Thin)},
                                 colors = TopAppBarDefaults.topAppBarColors(
                                     containerColor = MainColor
