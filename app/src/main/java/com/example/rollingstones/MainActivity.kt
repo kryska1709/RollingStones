@@ -71,7 +71,8 @@ class MainActivity : ComponentActivity() {
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Menu,
-                                            contentDescription = null
+                                            contentDescription = null,
+                                            tint = Color.White
                                         )
                                     }
                                 }
