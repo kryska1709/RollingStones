@@ -2,6 +2,7 @@ package com.example.rollingstones.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
@@ -15,3 +16,4 @@ val MainColor = Color (0xFF7a56e6)
 val SecondColor = Color(0xFFc256e6)
 val DarkButtonColor = Color (0xFF567ae6)
 val LightButtonColor = Color(0xFF56c2e6)
+

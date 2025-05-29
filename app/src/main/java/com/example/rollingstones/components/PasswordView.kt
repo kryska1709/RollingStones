@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.rollingstones.R
 import com.example.rollingstones.ui.theme.MainColor
 import com.example.rollingstones.ui.theme.DarkButtonColor
+import com.example.rollingstones.ui.theme.SecondColor
 
 @Composable
 fun PasswordView(
@@ -63,7 +64,7 @@ fun PasswordView(
                             R.drawable.eye_visible
                     ),
                     contentDescription = null,
-                    tint = MainColor
+                    tint = SecondColor
                 )
             }
         },
