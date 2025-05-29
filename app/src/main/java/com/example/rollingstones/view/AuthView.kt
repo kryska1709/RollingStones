@@ -7,14 +7,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -57,69 +63,95 @@ fun AuthView(
             .imePadding()
     ) {
         Column(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.align(Alignment.Center)
         ) {
             Text(
-                text = "Авторизация",
-                fontSize = 24.sp,
-                color = Color.Blue,
+                text = "Вход в аккаунт",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = MainColor,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Start)
+                    .padding(bottom = 18.dp)
+                    .align(Alignment.CenterHorizontally)
             )
-            FormView(email, "электронная почта", "ivanovivan11@gmail.com")
-            PasswordView(password, "пароль", "12345678")
+            Card(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(16.dp),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(Color.White),
+                elevation = CardDefaults.cardElevation(12.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(14.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    FormView(email, "электронная почта", "ivanovivan11@gmail.com")
+                    PasswordView(password, "пароль", "12345678")
 
-            Button(
-                onClick = {
-                    if (enabled.value) {
-                        authViewModel.auth(email.value, password.value) { success, errorMessage ->
-                            if (success) {
-                                navController.navigate(Screen.UserHomeScreen.route)
-                                Toast.makeText(context, "авторизация успешна", Toast.LENGTH_SHORT)
-                                    .show()
+                    Button(
+                        onClick = {
+                            if (enabled.value) {
+                                authViewModel.auth(
+                                    email.value,
+                                    password.value
+                                ) { success, errorMessage ->
+                                    if (success) {
+                                        navController.navigate(Screen.UserHomeScreen.route)
+                                        Toast.makeText(
+                                            context,
+                                            "авторизация успешна",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "ошибка авторизации",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
+                                    }
+                                }
                             } else {
-                                Toast.makeText(context, "ошибка авторизации", Toast.LENGTH_SHORT)
+                                Toast.makeText(context, "заполните все поля", Toast.LENGTH_SHORT)
                                     .show()
                             }
-                        }
-                    } else {
-                        Toast.makeText(context, "заполните все поля", Toast.LENGTH_SHORT).show()
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (enabled.value) DarkButtonColor else DarkButtonColor.copy(
+                                alpha = 0.5f
+                            )
+                        )
+                    ) {
+                        Text("войти", color = Color.White, fontSize = 16.sp)
                     }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (enabled.value) DarkButtonColor else DarkButtonColor.copy(
-                        alpha = 0.5f
-                    )
-                )
-            ) {
-                Text("войти", color = Color.White, fontSize = 16.sp)
-            }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-                Text(
-                    "Нет аккаунта?",
-                    color = Color.Blue,
-                    fontSize = 16.sp,
-                    modifier = Modifier.align(
-                        Alignment.CenterVertically
-                    ),
-                    fontWeight = FontWeight.Bold
-                )
-                TextButton(onClick = { navController.navigate(Screen.RegScreen.route) }) {
-                    Text(
-                        "Зарегистрироваться",
-                        color = SecondColor,
-                        fontSize = 16.sp,
-                        modifier = Modifier.align(
-                            Alignment.CenterVertically
-                        ),
-                        fontWeight = FontWeight.Bold
-                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider(thickness = 1.dp, color = LightButtonColor.copy(0.5f))
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(horizontalArrangement = Arrangement.Center) {
+                        Text(
+                            "Нет аккаунта?",
+                            color = Color.Blue.copy(0.7f),
+                            fontSize = 16.sp,
+                            modifier = Modifier.align(
+                                Alignment.CenterVertically
+                            )
+                        )
+                        TextButton(onClick = { navController.navigate(Screen.RegScreen.route) }) {
+                            Text(
+                                "Зарегистрироваться",
+                                color = SecondColor,
+                                fontSize = 16.sp,
+                                modifier = Modifier.align(
+                                    Alignment.CenterVertically
+                                )
+                            )
+                        }
+                    }
                 }
             }
         }
