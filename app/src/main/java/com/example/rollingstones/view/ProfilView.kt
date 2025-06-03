@@ -107,7 +107,7 @@ fun ProfilView(
                         "Электронная почта",
                         isEditing
                     )
-                    TextFieldProfile(user.value?.number ?: "нет данных", "Телефон", isEditing)
+                    TextFieldProfile(user.value?.number ?: "нет данных ", "Телефон", isEditing)
 
                     Column {
                         Row(
@@ -130,7 +130,6 @@ fun ProfilView(
                                 )
                             }
                         }
-
                         AnimatedVisibility(
                             visible = isExpanded.value,
                             enter = expandVertically(),
