@@ -49,7 +49,7 @@ fun HomeView(
             .padding(16.dp)
     ) {
         Text(
-            text = "Самая главная",
+            text = "главная",
             color = MainColor,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
