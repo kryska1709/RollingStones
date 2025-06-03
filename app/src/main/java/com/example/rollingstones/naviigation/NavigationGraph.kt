@@ -11,11 +11,13 @@ import com.example.rollingstones.view.LoadingView
 import com.example.rollingstones.view.ProfilView
 import com.example.rollingstones.view.RegView
 import com.example.rollingstones.viewmodel.AuthViewModel
+import com.example.rollingstones.viewmodel.BookingViewModel
 
 @Composable
 fun NavigationGraph(
     navHostController: NavHostController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    bookingViewModel: BookingViewModel,
 ){
     NavHost(
         navController = navHostController,
@@ -39,7 +41,7 @@ fun NavigationGraph(
         composable(
             route = Screen.UserHomeScreen.route
         ){
-            HomeView(navHostController,authViewModel)
+            HomeView(navHostController,authViewModel,bookingViewModel)
         }
         composable(
             route = Screen.UserSettingsScreen.route

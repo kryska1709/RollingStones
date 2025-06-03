@@ -30,8 +30,15 @@ class UserService {
         val document = database.collection("Users").document(email)
         val snapshot = document.get().await()
         if(!snapshot.exists()){
-            throw Exception("не получилось, мы пытались сделать всё, что могли, всё, что в наших силах, но обосрались")
+            throw Exception("все плохо")
         }
         return snapshot.toObject<UserModel>()
+    }
+
+    suspend fun deleteUser(
+        email: String
+    ){
+        database.collection("Users").document(email).delete().await()
+
     }
 }

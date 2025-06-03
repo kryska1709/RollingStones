@@ -1,8 +1,6 @@
 package com.example.rollingstones.viewmodel
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rollingstones.model.UserModel
@@ -18,18 +16,14 @@ import kotlinx.coroutines.launch
 class AuthViewModel(): ViewModel(){
     private val authService = AuthService.instance
     private val auth = Firebase.auth
-    private val userService = UserService.instance
+    private val userService = UserService.instance//синглтон instance
 
     private val _currentUser = MutableStateFlow<FirebaseUser?>(null)
     val currentUser = _currentUser.asStateFlow()
 
-    private val _authoriz = MutableStateFlow<Boolean>(auth.currentUser!=null)
-    val authoriz =_authoriz.asStateFlow()
-
     private val _users = MutableStateFlow<UserModel?>(null)
     val user = _users.asStateFlow()
     init {
-        auth.addAuthStateListener { _authoriz.value  = it.currentUser != null }
         getCurrentUser()
     }
     fun getCurrentUser(){
@@ -58,11 +52,18 @@ class AuthViewModel(): ViewModel(){
     fun signOut(){
         authService.signOut()
     }
-    fun deleteUser(){
-        try {
-            auth.currentUser?.let { authService.deleteUser(it) }
-        } catch (e: Exception){
-            Log.e("deleteUser authViewModel",e.message.toString())
+    fun deleteUser(
+        email: String
+    ){
+        viewModelScope.launch {
+            try {
+                _currentUser.value?.let { authService.deleteUser(it) }
+                _currentUser.value = null
+                _users.value = null
+                UserService.instance.deleteUser(email)
+            } catch (e: Exception) {
+                Log.e("deleteUser authViewModel", e.message.toString())
+            }
         }
     }
     fun createUser(
@@ -76,6 +77,14 @@ class AuthViewModel(): ViewModel(){
             } catch (e: Exception){
                 Log.e("createUser authViewModel",e.message.toString())
             }
+        }
+    }
+    fun getUser(
+        firebaseUser: FirebaseUser
+    ){
+        viewModelScope.launch {
+            _users.value= userService.getUser(firebaseUser)
+            Log.i("wtf",_users.value.toString())
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.rollingstones.view
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -24,6 +21,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -40,10 +38,10 @@ import com.example.rollingstones.components.FormView
 import com.example.rollingstones.components.PasswordView
 import com.example.rollingstones.naviigation.Screen
 import com.example.rollingstones.ui.theme.BackGround
-import com.example.rollingstones.ui.theme.LightButtonColor
-import com.example.rollingstones.ui.theme.SecondColor
 import com.example.rollingstones.ui.theme.DarkButtonColor
+import com.example.rollingstones.ui.theme.LightButtonColor
 import com.example.rollingstones.ui.theme.MainColor
+import com.example.rollingstones.ui.theme.SecondColor
 import com.example.rollingstones.viewmodel.AuthViewModel
 
 @Composable
@@ -54,8 +52,11 @@ fun AuthView(
     val context = LocalContext.current
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val enabled =
-        remember { derivedStateOf { email.value.isNotEmpty() && password.value.isNotEmpty() } }
+    val currentUser = authViewModel.currentUser.collectAsState()
+    val enabled = remember { derivedStateOf { email.value.isNotEmpty() && password.value.isNotEmpty() } }
+    LaunchedEffect(Unit) {
+        authViewModel.getCurrentUser()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -99,19 +100,10 @@ fun AuthView(
                                 ) { success, errorMessage ->
                                     if (success) {
                                         navController.navigate(Screen.UserHomeScreen.route)
-                                        Toast.makeText(
-                                            context,
-                                            "авторизация успешна",
-                                            Toast.LENGTH_SHORT
-                                        )
-                                            .show()
+                                        currentUser.value?.let { authViewModel.getUser(it) }
+                                        Toast.makeText(context, "авторизация успешна", Toast.LENGTH_SHORT).show()
                                     } else {
-                                        Toast.makeText(
-                                            context,
-                                            "ошибка авторизации",
-                                            Toast.LENGTH_SHORT
-                                        )
-                                            .show()
+                                        Toast.makeText(context, "ошибка авторизации", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             } else {

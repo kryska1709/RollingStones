@@ -32,6 +32,7 @@ import com.example.rollingstones.ui.theme.Bibliothy
 import com.example.rollingstones.ui.theme.MainColor
 import com.example.rollingstones.ui.theme.RollingStonesTheme
 import com.example.rollingstones.viewmodel.AuthViewModel
+import com.example.rollingstones.viewmodel.BookingViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val authViewModel = viewModel<AuthViewModel>()
+            val bookingViewModel = viewModel<BookingViewModel>()
             val navController = rememberNavController()
             val scope = rememberCoroutineScope()
             val navBackStackEntry = navController.currentBackStackEntryAsState()//следить за навигацией
@@ -84,7 +86,7 @@ class MainActivity : ComponentActivity() {
                                 .background(Color.White)
                                 .padding(innerPadding)
                         ) {
-                            NavigationGraph(navController, authViewModel)
+                            NavigationGraph(navController, authViewModel,bookingViewModel)
                         }
                     }
                 }

@@ -1,7 +1,6 @@
 package com.example.rollingstones.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,7 +21,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.rollingstones.R
-import com.example.rollingstones.ui.theme.MainColor
 import com.example.rollingstones.ui.theme.DarkButtonColor
 import com.example.rollingstones.ui.theme.SecondColor
 
