@@ -114,7 +114,7 @@ fun ProfilView(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text = "история бронирования lala: ",
+                                text = "история бронирования: ",
                                 color = MainColor,
                                 modifier = Modifier.padding(top = 7.dp)
                             )
