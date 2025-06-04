@@ -1,11 +1,33 @@
 package com.example.rollingstones.view
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,16 +38,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.rollingstones.R
-import com.example.rollingstones.components.DateTextField
-import com.example.rollingstones.components.TimeTextField
+import com.example.rollingstones.components.DatePickerDialog
+import com.example.rollingstones.components.TimeSelectionGrid
 import com.example.rollingstones.ui.theme.BackGround
 import com.example.rollingstones.ui.theme.Bibliothy
 import com.example.rollingstones.ui.theme.DarkButtonColor
-import com.example.rollingstones.ui.theme.LightButtonColor
 import com.example.rollingstones.ui.theme.MainColor
 import com.example.rollingstones.viewmodel.AuthViewModel
 import com.example.rollingstones.viewmodel.BookingViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,12 +57,13 @@ fun HomeView(
     bookingViewModel: BookingViewModel
 ) {
     val context = LocalContext.current
-    val date = remember { mutableStateOf("") }
-    val time = remember { mutableStateOf("") }
     val isReserved = remember { mutableStateOf(false) }
     val laneNumber = remember { mutableStateOf(1) }
     val currentUser = authViewModel.currentUser.collectAsState()
     val scope = rememberCoroutineScope()
+    val showDatePicker = remember { mutableStateOf(false) }
+    val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
+    val selectedTime = remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -74,9 +97,36 @@ fun HomeView(
                     color = MainColor,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
-                // Ввод даты и времени
-                DateTextField(date.value) { date.value = it }
-                TimeTextField(time.value) { time.value = it }
+
+                TextButton(
+                    onClick = {showDatePicker.value = true},
+                ) {
+                    Text(
+                        text = "Выберите дату",
+                        color = Color.Blue
+                    )
+                }
+
+                Text(
+                    text = "Выберите время",
+                    color = Color.Blue
+                )
+
+                TimeSelectionGrid(selectedTime.value) { selectedTime.value = it
+                Log.i("selectedTime", selectedTime.value.toString())}
+
+                if(showDatePicker.value){
+                    DatePickerDialog(
+                        onDateSelected =
+                            {
+                                selectedDate.value = it
+                                selectedTime.value = null
+                                showDatePicker.value = false
+                            },
+                        onDismiss = { showDatePicker.value = false }
+                    )
+                }
+
                 Row(
                 ){
                     Text(
@@ -123,22 +173,35 @@ fun HomeView(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
+                Text(
+                    text = if (selectedDate.value!=null) selectedDate.value.toString() else "выберите дату" ,
+                    fontFamily = Bibliothy,
+                    color = Color.Blue
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = if (selectedTime.value!=null) selectedTime.value.toString() else "выберите время",
+                    fontFamily = Bibliothy,
+                    color = Color.Blue
+                )
                 // Кнопка "Забронировать"
                 Button(
                     onClick = {
-                        if (date.value.isNotEmpty() && time.value.isNotEmpty()) {
+                        if (!selectedTime.value.isNullOrEmpty() && !selectedDate.value.toString().isNullOrEmpty()) {
                             scope.launch {
                                 currentUser.value?.let {
                                     bookingViewModel.createBooking(
-                                        date.value, time.value, laneNumber.value, it)
+                                        selectedDate.value.toString(),selectedTime.value.toString(), laneNumber.value, it)
                                 }
                             }
                             isReserved.value = true
                             Toast.makeText(
                                 context,
-                                "Бронь успешно создана на ${date.value} в ${time.value}",
+                                "Бронь успешно создана на ${selectedDate.value} в ${selectedTime.value}",
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
@@ -149,7 +212,7 @@ fun HomeView(
                             ).show()
                         }
                     },
-                    enabled = date.value.isNotEmpty() && time.value.isNotEmpty(),
+                    enabled = !selectedTime.value.isNullOrEmpty() && !selectedDate.value.toString().isNullOrEmpty(),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = DarkButtonColor,
                         contentColor = Color.White,
@@ -163,16 +226,9 @@ fun HomeView(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
-                // Отображение сообщения о брони
-                if (isReserved.value) {
-                    Text(
-                        text = "Вы забронировали дорожку номер ${laneNumber.value} на ${date.value} в ${time.value} ",
-                        color = Color.Black,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
+
             }
         }
     }

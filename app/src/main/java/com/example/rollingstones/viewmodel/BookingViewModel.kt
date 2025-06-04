@@ -16,19 +16,24 @@ class BookingViewModel(): ViewModel() {
 
     suspend fun createBooking(
         date: String,
-        time: String,
+        startTime: String,
+        endTime: String,
         laneNumber : Int,
         user : FirebaseUser
     ): Result<HistoryReservedModel>{
 
         return try {
-            val historyReserve = HistoryReservedModel(date,time,laneNumber)
+            if(timeToMinutes(endTime)<= timeToMinutes(startTime)){
+                return Result.failure(Exception("endTime < startTime"))
+            }
+            val historyReserve = HistoryReservedModel(date,startTime, endTime, laneNumber)
             val booking = BookingModel(
                 userId = user.uid,
                 userName = user.displayName?:"",
                 userEmail = user.email?:"",
                 date = date,
-                time = time,
+                startTime = startTime,
+                endTime = endTime,
                 laneNumber = laneNumber,
                 createdAdd = System.currentTimeMillis().toString()
             )
@@ -40,5 +45,9 @@ class BookingViewModel(): ViewModel() {
         } catch (error: Exception){
             Result.failure(error)
         }
+    }
+    private fun timeToMinutes(time: String): Int{
+        val (hours, minutes) = time.split(":").map { it.toInt() }
+        return hours*60+minutes
     }
 }
