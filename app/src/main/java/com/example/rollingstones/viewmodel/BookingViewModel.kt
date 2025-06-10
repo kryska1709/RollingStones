@@ -1,18 +1,25 @@
 package com.example.rollingstones.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.rollingstones.model.BookingModel
 import com.example.rollingstones.model.HistoryReservedModel
+import com.example.rollingstones.network.BookingService
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class BookingViewModel(): ViewModel() {
     private val database = Firebase.firestore
     private val auth = Firebase.auth
+    private val _reserved = MutableStateFlow(false)
+    val reserved = _reserved.asStateFlow()
 
     suspend fun createBooking(
         date: String,
@@ -49,5 +56,15 @@ class BookingViewModel(): ViewModel() {
     private fun timeToMinutes(time: String): Int{
         val (hours, minutes) = time.split(":").map { it.toInt() }
         return hours*60+minutes
+    }
+    fun isTimeSlotReversed(
+        date: String,
+        startTime: String,
+        endTime: String,
+        laneNumber : Int
+    ){
+        viewModelScope.launch {
+            _reserved.value = BookingService().isTimeSlotReserved(date,startTime,endTime,laneNumber)
+        }
     }
 }

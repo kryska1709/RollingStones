@@ -19,7 +19,7 @@ fun HistoryItem(
     Row(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(historyReservedModel.date, color = Color.Blue)
         Spacer(modifier = Modifier.width(3.dp))
-        Text(historyReservedModel.time, color = Color.Blue)
+        Text(historyReservedModel.startTime + "-" + historyReservedModel.endTime, color = Color.Blue)
         Spacer(modifier = Modifier.width(3.dp))
         Text("Дорожка №${historyReservedModel.laneNumber}", color = Color.Blue)
     }

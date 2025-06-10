@@ -63,7 +63,8 @@ fun HomeView(
     val scope = rememberCoroutineScope()
     val showDatePicker = remember { mutableStateOf(false) }
     val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
-    val selectedTime = remember { mutableStateOf<String?>(null) }
+    val startSelectedTime = remember { mutableStateOf<String?>(null) }
+    val endSelectedTime = remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -112,15 +113,34 @@ fun HomeView(
                     color = Color.Blue
                 )
 
-                TimeSelectionGrid(selectedTime.value) { selectedTime.value = it
-                Log.i("selectedTime", selectedTime.value.toString())}
+                TimeSelectionGrid(startSelectedTime.value, endSelectedTime.value) { selectedTime ->
+                    when{
+                        startSelectedTime.value == null -> {
+                            startSelectedTime.value = selectedTime
+                            endSelectedTime.value = null
+                        }
+                        endSelectedTime.value == null ->{
+                            if(startSelectedTime.value!! < selectedTime){
+                                endSelectedTime.value = selectedTime
+                            } else {
+                                startSelectedTime.value = selectedTime
+                                endSelectedTime.value = null
+                            }
+                        }
+                        else -> {
+                            startSelectedTime.value = selectedTime
+                            endSelectedTime.value = null
+                        }
+                    }
+                }
 
                 if(showDatePicker.value){
                     DatePickerDialog(
                         onDateSelected =
                             {
                                 selectedDate.value = it
-                                selectedTime.value = null
+                                startSelectedTime.value = null
+                                endSelectedTime.value = null
                                 showDatePicker.value = false
                             },
                         onDismiss = { showDatePicker.value = false }
@@ -184,24 +204,25 @@ fun HomeView(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = if (selectedTime.value!=null) selectedTime.value.toString() else "выберите время",
+                    text = if (startSelectedTime.value != null && endSelectedTime.value!=null)
+                        startSelectedTime.value.toString() + "-" + endSelectedTime.value.toString()  else "выберите время",
                     fontFamily = Bibliothy,
                     color = Color.Blue
                 )
                 // Кнопка "Забронировать"
                 Button(
                     onClick = {
-                        if (!selectedTime.value.isNullOrEmpty() && !selectedDate.value.toString().isNullOrEmpty()) {
+                        if (!startSelectedTime.value.isNullOrEmpty() && !endSelectedTime.value.isNullOrEmpty() && !selectedDate.value.toString().isNullOrEmpty()) {
                             scope.launch {
                                 currentUser.value?.let {
                                     bookingViewModel.createBooking(
-                                        selectedDate.value.toString(),selectedTime.value.toString(), laneNumber.value, it)
+                                        selectedDate.value.toString(),startSelectedTime.value.toString(), endSelectedTime.value.toString(), laneNumber.value, it)
                                 }
                             }
                             isReserved.value = true
                             Toast.makeText(
                                 context,
-                                "Бронь успешно создана на ${selectedDate.value} в ${selectedTime.value}",
+                                "Бронь успешно создана на ${selectedDate.value} c ${startSelectedTime.value} до ${endSelectedTime.value}",
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
@@ -212,7 +233,7 @@ fun HomeView(
                             ).show()
                         }
                     },
-                    enabled = !selectedTime.value.isNullOrEmpty() && !selectedDate.value.toString().isNullOrEmpty(),
+                    enabled = !startSelectedTime.value.isNullOrEmpty() &&  !endSelectedTime.value.isNullOrEmpty() && !selectedDate.value.toString().isNullOrEmpty(),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = DarkButtonColor,
                         contentColor = Color.White,
@@ -225,10 +246,7 @@ fun HomeView(
                         color = Color.White
                     )
                 }
-
                 Spacer(modifier = Modifier.height(14.dp))
-
-
             }
         }
     }

@@ -39,6 +39,7 @@ class UserService {
         email: String
     ){
         database.collection("Users").document(email).delete().await()
-
     }
+
+
 }
