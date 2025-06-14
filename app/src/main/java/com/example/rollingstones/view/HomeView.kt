@@ -194,21 +194,21 @@ fun HomeView(
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = if (selectedDate.value!=null) selectedDate.value.toString() else "выберите дату" ,
-                    fontFamily = Bibliothy,
-                    color = Color.Blue
-                )
-
+                selectedDate.value?.let {
+                    Text(
+                        text = it.toString(),
+                        fontFamily = Bibliothy,
+                        color = Color.Blue
+                    )
+                }
                 Spacer(modifier = Modifier.height(6.dp))
-
-                Text(
-                    text = if (startSelectedTime.value != null && endSelectedTime.value!=null)
-                        startSelectedTime.value.toString() + "-" + endSelectedTime.value.toString()  else "выберите время",
-                    fontFamily = Bibliothy,
-                    color = Color.Blue
-                )
+                if(startSelectedTime.value != null && endSelectedTime.value!=null) {
+                    Text(
+                        text = startSelectedTime.value.toString() + "-" + endSelectedTime.value.toString(),
+                        fontFamily = Bibliothy,
+                        color = Color.Blue
+                    )
+                }
                 // Кнопка "Забронировать"
                 Button(
                     onClick = {

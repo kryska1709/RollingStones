@@ -4,12 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.rollingstones.view.AdminHomeView
 import com.example.rollingstones.view.AuthView
 import com.example.rollingstones.view.HomeView
 import com.example.rollingstones.view.InfoView
 import com.example.rollingstones.view.LoadingView
 import com.example.rollingstones.view.ProfilView
 import com.example.rollingstones.view.RegView
+import com.example.rollingstones.viewmodel.AdminViewModel
 import com.example.rollingstones.viewmodel.AuthViewModel
 import com.example.rollingstones.viewmodel.BookingViewModel
 
@@ -18,10 +20,11 @@ fun NavigationGraph(
     navHostController: NavHostController,
     authViewModel: AuthViewModel,
     bookingViewModel: BookingViewModel,
+    adminViewModel: AdminViewModel
 ){
     NavHost(
         navController = navHostController,
-        startDestination = Screen.LoadingScreen.route
+        startDestination = Screen.AdminHomeScreen.route
     ){
         composable(
             route = Screen.AuthScreen.route
@@ -51,7 +54,7 @@ fun NavigationGraph(
         composable(
             route = Screen.AdminHomeScreen.route
         ){
-
+            AdminHomeView(navHostController,adminViewModel)
         }
         composable(
             route = Screen.InfoScreen.route
