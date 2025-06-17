@@ -1,5 +1,6 @@
 package com.example.rollingstones.view
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -49,6 +50,7 @@ import com.example.rollingstones.viewmodel.BookingViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeView(
@@ -59,6 +61,7 @@ fun HomeView(
     val context = LocalContext.current
     val isReserved = remember { mutableStateOf(false) }
     val laneNumber = remember { mutableStateOf(1) }
+    val userEmail = authViewModel.currentUser.value!!.email
     val currentUser = authViewModel.currentUser.collectAsState()
     val scope = rememberCoroutineScope()
     val showDatePicker = remember { mutableStateOf(false) }
@@ -216,7 +219,7 @@ fun HomeView(
                             scope.launch {
                                 currentUser.value?.let {
                                     bookingViewModel.createBooking(
-                                        selectedDate.value.toString(),startSelectedTime.value.toString(), endSelectedTime.value.toString(), laneNumber.value, it)
+                                        selectedDate.value.toString(),startSelectedTime.value.toString(), endSelectedTime.value.toString(), laneNumber.value, userEmail.toString(), it)
                                 }
                             }
                             isReserved.value = true

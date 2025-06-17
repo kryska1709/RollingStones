@@ -26,6 +26,7 @@ class BookingViewModel(): ViewModel() {
         startTime: String,
         endTime: String,
         laneNumber : Int,
+        userName : String,
         user : FirebaseUser
     ): Result<HistoryReservedModel>{
 
@@ -61,10 +62,11 @@ class BookingViewModel(): ViewModel() {
         date: String,
         startTime: String,
         endTime: String,
-        laneNumber : Int
+        laneNumber : Int,
+        userEmail: String
     ){
         viewModelScope.launch {
-            _reserved.value = BookingService().isTimeSlotReserved(date,startTime,endTime,laneNumber)
+            _reserved.value = BookingService().isTimeSlotReserved(date,startTime,endTime,laneNumber,userEmail)
         }
     }
 }
