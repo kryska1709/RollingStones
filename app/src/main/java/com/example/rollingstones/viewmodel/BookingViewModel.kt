@@ -26,7 +26,7 @@ class BookingViewModel(): ViewModel() {
         startTime: String,
         endTime: String,
         laneNumber : Int,
-        userName : String,
+        userEmail: String,
         user : FirebaseUser
     ): Result<HistoryReservedModel>{
 

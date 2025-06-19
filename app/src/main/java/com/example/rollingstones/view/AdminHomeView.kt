@@ -1,5 +1,6 @@
 package com.example.rollingstones.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,11 +40,22 @@ fun AdminHomeView(
     val isLoading = remember { mutableStateOf(true) }
     val refreshing = remember { mutableStateOf(false) }
     val stateRefresh = rememberPullToRefreshState()
-    // Показываем гифку загрузки 3 секунды
+
     LaunchedEffect(Unit) {
-        adminViewModel.allBookings()
-        delay(2000)
-        isLoading.value = false
+        isLoading.value = true
+        try{
+            adminViewModel.loadAndCleanBookings()
+            delay(2000)
+            isLoading.value = false
+        }catch (e: Exception){
+            Log.e("adminHomeView died", e.message.toString())
+        }
+    }
+    LaunchedEffect(Unit) {
+        while (true){
+            delay(300000)
+            adminViewModel.loadAndCleanBookings()
+        }
     }
     LaunchedEffect(refreshing.value) {
         if(refreshing.value){
