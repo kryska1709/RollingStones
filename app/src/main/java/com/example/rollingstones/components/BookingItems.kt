@@ -1,6 +1,7 @@
 package com.example.rollingstones.components
 
 import android.R
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +40,7 @@ fun BookingItems(
     bookingModel: BookingModel,
     adminViewModel: AdminViewModel
 ) {
+    val context = LocalContext.current
     var enabled = remember {mutableStateOf<Boolean>(false)}
     Card(
         modifier = Modifier
@@ -98,16 +101,17 @@ fun BookingItems(
                 color = MainColor) },
             text = { Text( text = "Вы уверены, что хотите отменить бронь?",
                 color = MainColor.copy(1.7f),
-                fontWeight = FontWeight.W100) },
+                fontWeight = FontWeight.Bold) },
             confirmButton = {
                 Button(
                     onClick = {
                         adminViewModel.deleteBookings(bookingModel.id)
                         enabled.value = false
+                        Toast.makeText(context,"Бронирование успешно отменено", Toast.LENGTH_SHORT).show()
                     },
                     colors = ButtonDefaults.buttonColors(LightButtonColor)
                 ) {
-                    Text(text = "удалить",color = Color.White)
+                    Text(text = "да",color = Color.White)
                 }
             },
             dismissButton = {
@@ -117,7 +121,7 @@ fun BookingItems(
                     },
                     colors = ButtonDefaults.buttonColors(LightButtonColor)
                 ) {
-                    Text(text = "отмена",color = Color.White)
+                    Text(text = "нет",color = Color.White)
                 }
             }
         )
