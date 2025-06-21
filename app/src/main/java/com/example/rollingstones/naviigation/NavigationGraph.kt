@@ -11,6 +11,7 @@ import com.example.rollingstones.view.InfoView
 import com.example.rollingstones.view.LoadingView
 import com.example.rollingstones.view.ProfilView
 import com.example.rollingstones.view.RegView
+import com.example.rollingstones.view.RulesView
 import com.example.rollingstones.viewmodel.AdminViewModel
 import com.example.rollingstones.viewmodel.AuthViewModel
 import com.example.rollingstones.viewmodel.BookingViewModel

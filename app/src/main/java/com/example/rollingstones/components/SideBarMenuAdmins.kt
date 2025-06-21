@@ -2,11 +2,12 @@ package com.example.rollingstones.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DrawerState
@@ -18,6 +19,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -45,48 +47,51 @@ fun SideBarMenuAdmins(
         drawerState = drawerState,
         gesturesEnabled = false,
         drawerContent = {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(width)
-                    .background(BackGround)
+            Box(
+                modifier = Modifier.fillMaxSize()
+                    .background(Color.Transparent)
+                    .clickable {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
+                Column(
+                    modifier = Modifier.fillMaxHeight()
+                        .background(BackGround)
+                        .width(width)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.logorolling),
                         contentDescription = null
                     )
-                }
 
-                RowSideBarMenu("Главная", R.drawable.house, DarkButtonColor) {
-                    navController.navigate(Screen.AdminHomeScreen.route)
-                    scope.launch { drawerState.close() }
-                }
-
-                RowSideBarMenu("Правила", R.drawable.info_circle, DarkButtonColor) {
-                    navController.navigate(Screen.RulesScreen.route)
-                    scope.launch { drawerState.close() }
-                }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                TextButton(
-                    onClick = {
-                        authViewModel.signOut()
-                        navController.navigate(Screen.AuthScreen.route)
+                    RowSideBarMenu("Главная", R.drawable.house, DarkButtonColor) {
+                        navController.navigate(Screen.AdminHomeScreen.route)
                         scope.launch { drawerState.close() }
-                    },
-                    modifier = Modifier.padding(start = 15.dp, bottom = 20.dp)
-                ) {
-                    Text(
-                        text = "Выйти из аккаунта",
-                        fontSize = 18.sp,
-                        color = DarkButtonColor
-                    )
+                    }
+
+                    RowSideBarMenu("Правила", R.drawable.info_circle, DarkButtonColor) {
+                        navController.navigate(Screen.RulesScreen.route)
+                        scope.launch { drawerState.close() }
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    TextButton(
+                        onClick = {
+                            authViewModel.signOut()
+                            navController.navigate(Screen.AuthScreen.route)
+                            scope.launch { drawerState.close() }
+                        },
+                        modifier = Modifier.padding(start = 15.dp, bottom = 20.dp)
+                    ) {
+                        Text(
+                            text = "Выйти из аккаунта",
+                            fontSize = 18.sp,
+                            color = DarkButtonColor
+                        )
+                    }
                 }
             }
         },
