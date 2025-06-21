@@ -61,5 +61,10 @@ fun NavigationGraph(
         ) {
             InfoView(navHostController)
         }
+        composable(
+            route = Screen.RulesScreen.route
+        ) {
+            RulesView(navHostController)
+        }
     }
 }

@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.rollingstones.components.SideBarMenu
+import com.example.rollingstones.components.SideBarMenuAdmins
 import com.example.rollingstones.model.BookingModel
 import com.example.rollingstones.naviigation.NavigationGraph
 import com.example.rollingstones.ui.theme.Bibliothy
@@ -82,6 +83,52 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             )
+                        }
+                    ) { innerPadding ->
+                        Box(
+                            modifier = Modifier.fillMaxSize()
+                                .background(Color.White)
+                                .padding(innerPadding)
+                        ) {
+                            NavigationGraph(navController, authViewModel,bookingViewModel,adminViewModel)
+                        }
+                    }
+                }
+                SideBarMenuAdmins(navController, authViewModel) { drawerState2 ->
+                    Scaffold(
+                        topBar = {
+                            if ((currentRoute == "admin_home_screen") || (currentRoute == "rules_screen")) {
+                                TopAppBar(
+                                    title = {
+                                        Text(
+                                            text = "Rolling Stones",
+                                            color = Color.White,
+                                            fontSize = 34.sp,
+                                            fontFamily = Bibliothy,
+                                            fontWeight = FontWeight.Thin
+                                        )
+                                    },
+                                    colors = TopAppBarDefaults.topAppBarColors(
+                                        containerColor = MainColor
+                                    ),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    navigationIcon = {
+                                        IconButton(
+                                            onClick = {
+                                                scope.launch {
+                                                    drawerState2.open()
+                                                }
+                                            }
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Menu,
+                                                contentDescription = null,
+                                                tint = Color.White
+                                            )
+                                        }
+                                    }
+                                )
+                            }
                         }
                     ) { innerPadding ->
                         Box(
