@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(): ViewModel(){
     private val authService = AuthService.instance
-    private val auth = Firebase.auth
     private val userService = UserService.instance//синглтон instance
 
     private val _currentUser = MutableStateFlow<FirebaseUser?>(null)
@@ -61,6 +60,8 @@ class AuthViewModel(): ViewModel(){
     }
     fun signOut(){
         authService.signOut()
+        _currentUser.value = null
+        _users.value = null
     }
     fun deleteUser(
         email: String
@@ -95,10 +96,9 @@ class AuthViewModel(): ViewModel(){
         viewModelScope.launch {
             try {
                 val userData = userService.getUser(firebaseUser)
-                _users.value?.let {
-                    _users.value = it
-                    _isAdmin.value = it.isAdmin
-                }
+                Log.i("AuthViewModel", userData.toString())
+                _users.value = userData
+                _isAdmin.value = userData?.isAdmin ?: false
             } catch (e: Exception) {
                 Log.e("wtf", e.message.toString())
             }

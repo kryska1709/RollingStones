@@ -53,17 +53,12 @@ fun AuthView(
     val context = LocalContext.current
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val isAdmin = authViewModel.isAdmin.collectAsState()
-    val currentUser = authViewModel.currentUser.collectAsState()
     val enabled = remember { derivedStateOf { email.value.isNotEmpty() && password.value.isNotEmpty() } }
-//    LaunchedEffect(Unit) {
-//        authViewModel.getCurrentUser()
-//    }
     val user = authViewModel.user.collectAsState()
+
     LaunchedEffect(user.value) {
-        Log.i("suka dostalllloooo", user.value.toString())
         user.value?.let {
-            if (it.isAdmin){
+            if (it.isAdmin == true){
                 navController.navigate(Screen.AdminHomeScreen.route)
             } else {
                 navController.navigate(Screen.UserHomeScreen.route)

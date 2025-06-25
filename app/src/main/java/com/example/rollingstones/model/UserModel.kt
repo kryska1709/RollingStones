@@ -8,5 +8,5 @@ data class UserModel(
     val number: String = "",
     val email: String = "",
     val historyReserve: List<HistoryReservedModel> = listOf(),
-    val isAdmin: Boolean = false
+    val isAdmin: Boolean? = null
 )

@@ -16,26 +16,51 @@ import coil.request.ImageRequest
 import com.example.rollingstones.naviigation.Screen
 import com.example.rollingstones.ui.theme.DarkButtonColor
 import com.example.rollingstones.viewmodel.AuthViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 @Composable
 fun LoadingView(
     navController: NavController,
     authViewModel: AuthViewModel
 ) {
+
     val currentUser = authViewModel.currentUser.collectAsState()
-    LaunchedEffect(currentUser){
+    val userData = authViewModel.user.collectAsState()
+
+    LaunchedEffect(currentUser.value) {
         delay(3000)
-        if(currentUser.value!=null){
+        if (currentUser.value != null) {
             try {
                 authViewModel.getUser(currentUser.value!!)
-                navController.navigate(Screen.UserHomeScreen.route)
-            } catch (error: Exception){
-                Log.e("loadingview error", error.message.toString())
-                navController.navigate(Screen.AuthScreen.route)
+                withContext(Dispatchers.Main) {
+                    userData.value?.let { user ->
+                        if (user.isAdmin == true) {
+                            navController.navigate(Screen.AdminHomeScreen.route) {
+                                popUpTo(Screen.LoadingScreen.route) { inclusive = true }
+                            }
+                        } else {
+                            navController.navigate(Screen.UserHomeScreen.route) {
+                                popUpTo(Screen.LoadingScreen.route) { inclusive = true }
+                            }
+                        }
+                    } ?: run {
+                        navController.navigate(Screen.AuthScreen.route) {
+                            popUpTo(Screen.LoadingScreen.route) { inclusive = true }
+                        }
+                    }
+                }
+            } catch (error: Exception) {
+                Log.e("LoadingView", "Error fetching user: ${error.message}")
+                navController.navigate(Screen.AuthScreen.route) {
+                    popUpTo(Screen.LoadingScreen.route) { inclusive = true }
+                }
             }
         } else {
-            navController.navigate(Screen.AuthScreen.route)
+            navController.navigate(Screen.AuthScreen.route) {
+                popUpTo(Screen.LoadingScreen.route) { inclusive = true }
+            }
         }
     }
     Box(

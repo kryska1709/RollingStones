@@ -1,5 +1,6 @@
 package com.example.rollingstones.network
 
+import android.util.Log
 import com.example.rollingstones.model.UserModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
@@ -23,16 +24,23 @@ class UserService {
         return user
     }
 
-    suspend fun getUser(
-        currentUser: FirebaseUser
-    ): UserModel?{
-        val email = currentUser.email?: throw Exception("некорректный email")
-        val document = database.collection("Users").document(email)
-        val snapshot = document.get().await()
-        if(!snapshot.exists()){
-            throw Exception("все плохо")
+    suspend fun getUser(firebaseUser: FirebaseUser): UserModel? {
+        val email = firebaseUser.email ?: throw Exception("Ошибка получения почты")
+
+        return try {
+            val document = database.collection("Users").document(email).get().await()
+            val user = UserModel(
+                name = document.getString("name") ?: "",
+                number = document.getString("number") ?: "",
+                email = document.getString("email") ?: "",
+                historyReserve = emptyList(),
+                isAdmin = document.getBoolean("isAdmin") ?: false
+            )
+            user
+        } catch (e: Exception) {
+            Log.e("UserService", "Error fetching user", e)
+            null
         }
-        return snapshot.toObject<UserModel>()
     }
 
     suspend fun deleteUser(
