@@ -23,12 +23,17 @@ class AuthViewModel(): ViewModel(){
 
     private val _users = MutableStateFlow<UserModel?>(null)
     val user = _users.asStateFlow()
+
+    private val _isAdmin = MutableStateFlow<Boolean>(false)
+    val isAdmin = _isAdmin.asStateFlow()
+
     init {
         getCurrentUser()
     }
     fun getCurrentUser(){
         viewModelScope.launch {
             _currentUser.value=authService.getCurrentUser()
+            _currentUser.value?.let { getUser(it) }
         }
     }
     fun reg(
@@ -46,7 +51,12 @@ class AuthViewModel(): ViewModel(){
         onComplete: (Boolean, String?) -> Unit
     ) {
         viewModelScope.launch {
-            authService.authorization(email, password, onComplete)
+            authService.authorization(email, password){success, error ->
+                if (success){
+                    getCurrentUser()
+                }
+                onComplete(success,error)
+            }
         }
     }
     fun signOut(){
@@ -83,8 +93,15 @@ class AuthViewModel(): ViewModel(){
         firebaseUser: FirebaseUser
     ){
         viewModelScope.launch {
-            _users.value= userService.getUser(firebaseUser)
-            Log.i("wtf",_users.value.toString())
+            try {
+                val userData = userService.getUser(firebaseUser)
+                _users.value?.let {
+                    _users.value = it
+                    _isAdmin.value = it.isAdmin
+                }
+            } catch (e: Exception) {
+                Log.e("wtf", e.message.toString())
+            }
         }
     }
 }

@@ -7,5 +7,6 @@ data class UserModel(
     val name: String = "",
     val number: String = "",
     val email: String = "",
-    val historyReserve: List<HistoryReservedModel> = listOf()
+    val historyReserve: List<HistoryReservedModel> = listOf(),
+    val isAdmin: Boolean = false
 )

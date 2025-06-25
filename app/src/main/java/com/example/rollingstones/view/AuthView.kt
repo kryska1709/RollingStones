@@ -1,5 +1,6 @@
 package com.example.rollingstones.view
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -52,10 +53,22 @@ fun AuthView(
     val context = LocalContext.current
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
+    val isAdmin = authViewModel.isAdmin.collectAsState()
     val currentUser = authViewModel.currentUser.collectAsState()
     val enabled = remember { derivedStateOf { email.value.isNotEmpty() && password.value.isNotEmpty() } }
-    LaunchedEffect(Unit) {
-        authViewModel.getCurrentUser()
+//    LaunchedEffect(Unit) {
+//        authViewModel.getCurrentUser()
+//    }
+    val user = authViewModel.user.collectAsState()
+    LaunchedEffect(user.value) {
+        Log.i("suka dostalllloooo", user.value.toString())
+        user.value?.let {
+            if (it.isAdmin){
+                navController.navigate(Screen.AdminHomeScreen.route)
+            } else {
+                navController.navigate(Screen.UserHomeScreen.route)
+            }
+        }
     }
     Box(
         modifier = Modifier
@@ -99,8 +112,6 @@ fun AuthView(
                                     password.value
                                 ) { success, errorMessage ->
                                     if (success) {
-                                        navController.navigate(Screen.UserHomeScreen.route)
-                                        currentUser.value?.let { authViewModel.getUser(it) }
                                         Toast.makeText(context, "авторизация успешна", Toast.LENGTH_SHORT).show()
                                     } else {
                                         Toast.makeText(context, "ошибка авторизации", Toast.LENGTH_SHORT).show()

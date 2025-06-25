@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +43,7 @@ fun SideBarMenu(
     val width = (configuration.screenWidthDp*0.65).dp
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val isAdmin = authViewModel.isAdmin.collectAsState()
     ModalNavigationDrawer(drawerState = drawerState, gesturesEnabled = false,
         drawerContent = {
             Box(
@@ -62,22 +64,41 @@ fun SideBarMenu(
                         painter = painterResource(R.drawable.logorolling),
                         contentDescription = null
                     )
-                    RowSideBarMenu("Главная",R.drawable.house, DarkButtonColor) {
-                        navController.navigate(Screen.UserHomeScreen.route)
-                        scope.launch {
-                            drawerState.close()
+                    when(isAdmin.value) {
+                        true -> {
+                            RowSideBarMenu("Главная", R.drawable.house, DarkButtonColor) {
+                                navController.navigate(Screen.AdminHomeScreen.route)
+                                scope.launch { drawerState.close() }
+                            }
+
+                            RowSideBarMenu("Правила", R.drawable.info_circle, DarkButtonColor) {
+                                navController.navigate(Screen.RulesScreen.route)
+                                scope.launch { drawerState.close() }
+                            }
                         }
-                    }
-                    RowSideBarMenu("Профиль",R.drawable.person_crop_circle, DarkButtonColor) {
-                        navController.navigate(Screen.UserSettingsScreen.route)
-                        scope.launch {
-                            drawerState.close()
-                        }
-                    }
-                    RowSideBarMenu("О нас",R.drawable.info_circle, DarkButtonColor) {
-                        navController.navigate(Screen.InfoScreen.route)
-                        scope.launch {
-                            drawerState.close()
+                        else -> {
+                            RowSideBarMenu("Главная", R.drawable.house, DarkButtonColor) {
+                                navController.navigate(Screen.UserHomeScreen.route)
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            }
+                            RowSideBarMenu(
+                                "Профиль",
+                                R.drawable.person_crop_circle,
+                                DarkButtonColor
+                            ) {
+                                navController.navigate(Screen.UserSettingsScreen.route)
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            }
+                            RowSideBarMenu("О нас", R.drawable.info_circle, DarkButtonColor) {
+                                navController.navigate(Screen.InfoScreen.route)
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            }
                         }
                     }
                     Spacer(Modifier.weight(1f))

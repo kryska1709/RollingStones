@@ -94,52 +94,6 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-                SideBarMenuAdmins(navController, authViewModel) { drawerState2 ->
-                    Scaffold(
-                        topBar = {
-                            if ((currentRoute == "admin_home_screen") || (currentRoute == "rules_screen")) {
-                                TopAppBar(
-                                    title = {
-                                        Text(
-                                            text = "Rolling Stones",
-                                            color = Color.White,
-                                            fontSize = 34.sp,
-                                            fontFamily = Bibliothy,
-                                            fontWeight = FontWeight.Thin
-                                        )
-                                    },
-                                    colors = TopAppBarDefaults.topAppBarColors(
-                                        containerColor = MainColor
-                                    ),
-                                    modifier = Modifier.fillMaxWidth(),
-                                    navigationIcon = {
-                                        IconButton(
-                                            onClick = {
-                                                scope.launch {
-                                                    drawerState2.open()
-                                                }
-                                            }
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Default.Menu,
-                                                contentDescription = null,
-                                                tint = Color.White
-                                            )
-                                        }
-                                    }
-                                )
-                            }
-                        }
-                    ) { innerPadding ->
-                        Box(
-                            modifier = Modifier.fillMaxSize()
-                                .background(Color.White)
-                                .padding(innerPadding)
-                        ) {
-                            NavigationGraph(navController, authViewModel,bookingViewModel,adminViewModel)
-                        }
-                    }
-                }
             }
         }
     }
