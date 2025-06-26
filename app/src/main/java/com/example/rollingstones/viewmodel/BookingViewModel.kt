@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.rollingstones.model.BookingModel
 import com.example.rollingstones.model.HistoryReservedModel
 import com.example.rollingstones.network.BookingService
+import com.example.rollingstones.util.timeToMinutes
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
@@ -54,19 +55,14 @@ class BookingViewModel(): ViewModel() {
             Result.failure(error)
         }
     }
-    private fun timeToMinutes(time: String): Int{
-        val (hours, minutes) = time.split(":").map { it.toInt() }
-        return hours*60+minutes
-    }
-    fun isTimeSlotReversed(
+    fun isLaneReserved(
         date: String,
         startTime: String,
         endTime: String,
-        laneNumber : Int,
-        userEmail: String
+        laneNumber: Int
     ){
         viewModelScope.launch {
-            _reserved.value = BookingService().isTimeSlotReserved(date,startTime,endTime,laneNumber,userEmail)
+            _reserved.value = BookingService().isLaneReserved(date,startTime,endTime,laneNumber)
         }
     }
 }

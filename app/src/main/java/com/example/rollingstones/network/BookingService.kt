@@ -1,6 +1,7 @@
 package com.example.rollingstones.network
 
 import com.example.rollingstones.model.BookingModel
+import com.example.rollingstones.util.timeToMinutes
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
@@ -8,26 +9,6 @@ import kotlin.collections.sortedWith
 
 class BookingService{
     private val database = Firebase.firestore
-    suspend fun isTimeSlotReserved(
-        date: String,
-        startTime: String,
-        endTime: String,
-        laneNumber: Int,
-        userEmail: String
-    ): Boolean{
-        return try {
-            val bookings = database.collection("Bookings")
-                .whereEqualTo("date",date)
-                .whereEqualTo("startTime",startTime)
-                .whereEqualTo("endTime", endTime)
-                .whereEqualTo("laneNumber", laneNumber)
-                .whereEqualTo("userEmail", userEmail)
-                .get().await()
-            bookings.isEmpty
-        } catch (error: Exception){
-            false
-        }
-    }
 
     suspend fun allBookings(): List<BookingModel>{
         return try{
@@ -47,6 +28,29 @@ class BookingService{
         return try {
             database.collection("Bookings").document(bookingId).delete().await()
             true
+        } catch (e: Exception){
+            false
+        }
+    }
+
+    suspend fun isLaneReserved(
+        date: String,
+        startTime: String,
+        endTime: String,
+        laneNumber: Int
+    ) : Boolean{
+        return try{
+            val bookings = database.collection("Bookings")
+                .whereEqualTo("date", date)
+                .whereEqualTo("laneNumber", laneNumber)
+                .get().await().documents.mapNotNull { it.toObject(BookingModel::class.java) }
+            bookings.none{
+                val bookingStart = timeToMinutes(it.startTime)
+                val bookingEnd = timeToMinutes(it.endTime)
+                val newStart = timeToMinutes(startTime)
+                val newEnd = timeToMinutes(endTime)
+                newStart < bookingEnd && newEnd > bookingStart
+            }
         } catch (e: Exception){
             false
         }

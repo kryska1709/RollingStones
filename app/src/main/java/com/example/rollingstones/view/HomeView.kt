@@ -1,7 +1,6 @@
 package com.example.rollingstones.view
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -21,7 +20,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -68,6 +66,7 @@ fun HomeView(
     val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
     val startSelectedTime = remember { mutableStateOf<String?>(null) }
     val endSelectedTime = remember { mutableStateOf<String?>(null) }
+    val reserved = bookingViewModel.reserved.collectAsState()
 
     Column(
         modifier = Modifier
@@ -217,17 +216,42 @@ fun HomeView(
                     onClick = {
                         if (!startSelectedTime.value.isNullOrEmpty() && !endSelectedTime.value.isNullOrEmpty() && !selectedDate.value.toString().isNullOrEmpty()) {
                             scope.launch {
-                                currentUser.value?.let {
-                                    bookingViewModel.createBooking(
-                                        selectedDate.value.toString(),startSelectedTime.value.toString(), endSelectedTime.value.toString(), laneNumber.value, userEmail.toString(), it)
+                                bookingViewModel.isLaneReserved(
+                                    selectedDate.value.toString(),
+                                    startSelectedTime.value.toString(),
+                                    endSelectedTime.value.toString(),
+                                    laneNumber.value
+                                )
+                                if (reserved.value) {
+                                    currentUser.value?.let {
+                                        bookingViewModel.createBooking(
+                                            selectedDate.value.toString(),
+                                            startSelectedTime.value.toString(),
+                                            endSelectedTime.value.toString(),
+                                            laneNumber.value,
+                                            userEmail.toString(),
+                                            it
+                                        )
+                                    }
+                                    isReserved.value = true
+                                    Toast.makeText(
+                                        context,
+                                        "Бронь успешно создана на ${selectedDate.value} c ${startSelectedTime.value} до ${endSelectedTime.value}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "дорожка на это время уже забронирована",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    Toast.makeText(
+                                        context,
+                                        "выберите другую дорожку",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
                             }
-                            isReserved.value = true
-                            Toast.makeText(
-                                context,
-                                "Бронь успешно создана на ${selectedDate.value} c ${startSelectedTime.value} до ${endSelectedTime.value}",
-                                Toast.LENGTH_LONG
-                            ).show()
                         } else {
                             Toast.makeText(
                                 context,

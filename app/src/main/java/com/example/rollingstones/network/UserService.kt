@@ -48,6 +48,4 @@ class UserService {
     ){
         database.collection("Users").document(email).delete().await()
     }
-
-
 }
