@@ -39,7 +39,7 @@ class UserService {
                         date = reservationData["date"] as? String ?: "",
                         startTime = reservationData["startTime"] as? String ?: "",
                         endTime = reservationData["endTime"] as? String ?: "",
-                        laneNumber = reservationData["laneNumber"] as? Int ?: 0
+                        laneNumber = (reservationData["laneNumber"] as? Long)?.toInt() ?: 0
                     )
                     historyReserveList.add(historyReserve)
                 } catch (e: Exception) {
