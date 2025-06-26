@@ -1,5 +1,6 @@
 package com.example.rollingstones.view
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -135,6 +136,7 @@ fun ProfileView(
                             exit = shrinkVertically()
                         ) {
                             LazyColumn {
+                                Log.d("ProfileView", user.value?.historyReserve.toString())
                                 user.value?.historyReserve?.let { list ->
                                     items(list) { item ->
                                         HistoryItem(item)

@@ -57,7 +57,6 @@ fun HomeView(
     val context = LocalContext.current
     val isReserved = remember { mutableStateOf(false) }
     val laneNumber = remember { mutableIntStateOf(1) }
-    val userEmail = authViewModel.currentUser.value!!.email
     val currentUser = authViewModel.currentUser.collectAsState()
     val scope = rememberCoroutineScope()
     val showDatePicker = remember { mutableStateOf(false) }
@@ -244,7 +243,6 @@ fun HomeView(
                                             startSelectedTime.value.toString(),
                                             endSelectedTime.value.toString(),
                                             laneNumber.intValue,
-                                            userEmail.toString(),
                                             it
                                         )
                                     }

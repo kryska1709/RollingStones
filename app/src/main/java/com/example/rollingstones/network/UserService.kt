@@ -1,6 +1,7 @@
 package com.example.rollingstones.network
 
 import android.util.Log
+import com.example.rollingstones.model.HistoryReservedModel
 import com.example.rollingstones.model.UserModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
@@ -28,11 +29,29 @@ class UserService {
 
         return try {
             val document = database.collection("Users").document(email).get().await()
+
+            val historyReserveList = mutableListOf<HistoryReservedModel>()
+            val historyReserveData = document.get("historyReserve") as? List<Map<String, Any>> ?: emptyList()
+
+            historyReserveData.forEach { reservationData ->
+                try {
+                    val historyReserve = HistoryReservedModel(
+                        date = reservationData["date"] as? String ?: "",
+                        startTime = reservationData["startTime"] as? String ?: "",
+                        endTime = reservationData["endTime"] as? String ?: "",
+                        laneNumber = reservationData["laneNumber"] as? Int ?: 0
+                    )
+                    historyReserveList.add(historyReserve)
+                } catch (e: Exception) {
+                    Log.e("UserService", "Error parsing reservation data", e)
+                }
+            }
+
             val user = UserModel(
                 name = document.getString("name") ?: "",
                 number = document.getString("number") ?: "",
                 email = document.getString("email") ?: "",
-                historyReserve = emptyList(),
+                historyReserve = historyReserveList,
                 isAdmin = document.getBoolean("isAdmin") ?: false
             )
             user
