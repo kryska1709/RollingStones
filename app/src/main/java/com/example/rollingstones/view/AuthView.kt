@@ -18,7 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -109,6 +109,7 @@ fun AuthView(
                                     if (success) {
                                         Toast.makeText(context, "авторизация успешна", Toast.LENGTH_SHORT).show()
                                     } else {
+                                        Log.e("AuthView", errorMessage.toString())
                                         Toast.makeText(context, "ошибка авторизации", Toast.LENGTH_SHORT).show()
                                     }
                                 }
@@ -127,7 +128,7 @@ fun AuthView(
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
-                    Divider(thickness = 1.dp, color = LightButtonColor.copy(0.5f))
+                    HorizontalDivider(thickness = 1.dp, color = LightButtonColor.copy(0.5f))
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Row(horizontalArrangement = Arrangement.Center) {

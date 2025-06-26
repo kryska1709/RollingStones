@@ -1,4 +1,5 @@
 package com.example.rollingstones.network
+
 import android.util.Log
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth

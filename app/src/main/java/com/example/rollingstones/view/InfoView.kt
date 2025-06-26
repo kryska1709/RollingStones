@@ -19,15 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.rollingstones.ui.theme.BackGround
 import com.example.rollingstones.ui.theme.Bibliothy
 import com.example.rollingstones.ui.theme.MainColor
 
 @Composable
-fun InfoView(
-    navController: NavController
-) {
+fun InfoView() {
+
     Column(
         modifier = Modifier
             .fillMaxSize()

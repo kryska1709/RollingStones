@@ -31,6 +31,6 @@ fun DatePickerDialog(
         }, year, month, day
     )
     datePicker.datePicker.minDate = calendar.timeInMillis //получение текущей даты
-    datePicker.setOnDismissListener { onDismiss }
+    datePicker.setOnDismissListener { onDismiss() }
     datePicker.show()
 }

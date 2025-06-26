@@ -1,6 +1,5 @@
 package com.example.rollingstones.model
 
-import androidx.lifecycle.ViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -9,7 +9,7 @@ import com.example.rollingstones.view.AuthView
 import com.example.rollingstones.view.HomeView
 import com.example.rollingstones.view.InfoView
 import com.example.rollingstones.view.LoadingView
-import com.example.rollingstones.view.ProfilView
+import com.example.rollingstones.view.ProfileView
 import com.example.rollingstones.view.RegView
 import com.example.rollingstones.view.RulesView
 import com.example.rollingstones.viewmodel.AdminViewModel
@@ -45,27 +45,27 @@ fun NavigationGraph(
         composable(
             route = Screen.UserHomeScreen.route
         ){
-            HomeView(navHostController,authViewModel,bookingViewModel)
+            HomeView(authViewModel,bookingViewModel)
         }
         composable(
             route = Screen.UserSettingsScreen.route
         ){
-            ProfilView(navHostController,authViewModel)
+            ProfileView(navHostController,authViewModel)
         }
         composable(
             route = Screen.AdminHomeScreen.route
         ){
-            AdminHomeView(navHostController,adminViewModel)
+            AdminHomeView(adminViewModel)
         }
         composable(
             route = Screen.InfoScreen.route
         ) {
-            InfoView(navHostController)
+            InfoView()
         }
         composable(
             route = Screen.RulesScreen.route
         ) {
-            RulesView(navHostController)
+            RulesView()
         }
     }
 }

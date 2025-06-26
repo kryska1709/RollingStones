@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.rollingstones.model.UserModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 

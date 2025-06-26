@@ -7,7 +7,6 @@ import com.example.rollingstones.model.HistoryReservedModel
 import com.example.rollingstones.network.BookingService
 import com.example.rollingstones.util.timeToMinutes
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -16,9 +15,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class BookingViewModel(): ViewModel() {
+class BookingViewModel: ViewModel() {
+
     private val database = Firebase.firestore
-    private val auth = Firebase.auth
+
     private val _reserved = MutableStateFlow(false)
     val reserved = _reserved.asStateFlow()
 
@@ -27,12 +27,11 @@ class BookingViewModel(): ViewModel() {
         startTime: String,
         endTime: String,
         laneNumber : Int,
-        userEmail: String,
         user : FirebaseUser
     ): Result<HistoryReservedModel>{
 
         return try {
-            if(timeToMinutes(endTime)<= timeToMinutes(startTime)){
+            if (timeToMinutes(endTime)<= timeToMinutes(startTime)){
                 return Result.failure(Exception("endTime < startTime"))
             }
             val historyReserve = HistoryReservedModel(date,startTime, endTime, laneNumber)
@@ -47,6 +46,7 @@ class BookingViewModel(): ViewModel() {
                 createdAdd = System.currentTimeMillis().toString()
             )
             val bookingRef = database.collection("Bookings").document()
+
             booking.id = bookingRef.id
             bookingRef.set(booking).await()
             database.collection("Users").document(user.email?:"").update("historyReserve",FieldValue.arrayUnion(historyReserve)).await()

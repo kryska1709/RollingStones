@@ -3,7 +3,6 @@ package com.example.rollingstones.components
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withAnnotation
@@ -12,7 +11,6 @@ import androidx.navigation.NavController
 import com.example.rollingstones.naviigation.Screen
 import com.example.rollingstones.ui.theme.DarkButtonColor
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun CustomTextButton(
     navController: NavController

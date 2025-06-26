@@ -7,13 +7,12 @@ import com.example.rollingstones.model.UserModel
 import com.example.rollingstones.network.AuthService
 import com.example.rollingstones.network.UserService
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class AuthViewModel(): ViewModel(){
+class AuthViewModel: ViewModel(){
+
     private val authService = AuthService.instance
     private val userService = UserService.instance//синглтон instance
 
@@ -23,27 +22,30 @@ class AuthViewModel(): ViewModel(){
     private val _users = MutableStateFlow<UserModel?>(null)
     val user = _users.asStateFlow()
 
-    private val _isAdmin = MutableStateFlow<Boolean>(false)
+    private val _isAdmin = MutableStateFlow(false)
     val isAdmin = _isAdmin.asStateFlow()
 
     init {
         getCurrentUser()
     }
-    fun getCurrentUser(){
+
+    private fun getCurrentUser() {
         viewModelScope.launch {
             _currentUser.value=authService.getCurrentUser()
             _currentUser.value?.let { getUser(it) }
         }
     }
+
     fun reg(
         email:String,
         password:String,
         onComplete: (Boolean, String?) -> Unit
-    ){
+    ) {
         viewModelScope.launch {
             authService.registration(email, password, onComplete)
         }
     }
+
     fun auth(
         email:String,
         password:String,
@@ -58,14 +60,16 @@ class AuthViewModel(): ViewModel(){
             }
         }
     }
+
     fun signOut(){
         authService.signOut()
         _currentUser.value = null
         _users.value = null
     }
+
     fun deleteUser(
         email: String
-    ){
+    ) {
         viewModelScope.launch {
             try {
                 _currentUser.value?.let { authService.deleteUser(it) }
@@ -92,7 +96,7 @@ class AuthViewModel(): ViewModel(){
     }
     fun getUser(
         firebaseUser: FirebaseUser
-    ){
+    ) {
         viewModelScope.launch {
             try {
                 val userData = userService.getUser(firebaseUser)

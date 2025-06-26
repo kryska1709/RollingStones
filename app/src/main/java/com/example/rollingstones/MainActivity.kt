@@ -1,5 +1,7 @@
 package com.example.rollingstones
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,12 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.rollingstones.components.SideBarMenu
-import com.example.rollingstones.components.SideBarMenuAdmins
-import com.example.rollingstones.model.BookingModel
 import com.example.rollingstones.naviigation.NavigationGraph
 import com.example.rollingstones.ui.theme.Bibliothy
 import com.example.rollingstones.ui.theme.MainColor
@@ -39,10 +40,15 @@ import com.example.rollingstones.viewmodel.BookingViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("SourceLockedOrientationActivity")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         setContent {
             val authViewModel = viewModel<AuthViewModel>()
             val bookingViewModel = viewModel<BookingViewModel>()
@@ -90,7 +96,7 @@ class MainActivity : ComponentActivity() {
                                 .background(Color.White)
                                 .padding(innerPadding)
                         ) {
-                            NavigationGraph(navController, authViewModel,bookingViewModel,adminViewModel)
+                            NavigationGraph(navController, authViewModel, bookingViewModel, adminViewModel)
                         }
                     }
                 }

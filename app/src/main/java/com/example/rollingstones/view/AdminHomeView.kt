@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.request.ImageRequest
@@ -37,11 +36,9 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminHomeView(
-    navController: NavController,
     adminViewModel: AdminViewModel
 ) {
     val bookings = adminViewModel.booking.collectAsState()
-    val isDelete = adminViewModel.isDelete.collectAsState()
     val isLoading = remember { mutableStateOf(true) }
     val refreshing = remember { mutableStateOf(false) }
     val stateRefresh = rememberPullToRefreshState()

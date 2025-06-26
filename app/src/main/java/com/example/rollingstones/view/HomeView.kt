@@ -17,13 +17,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,7 +36,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.rollingstones.R
 import com.example.rollingstones.components.DatePickerDialog
 import com.example.rollingstones.components.TimeSelectionGrid
@@ -49,16 +49,14 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @SuppressLint("StateFlowValueCalledInComposition")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeView(
-    navController: NavController,
     authViewModel: AuthViewModel,
     bookingViewModel: BookingViewModel
 ) {
     val context = LocalContext.current
     val isReserved = remember { mutableStateOf(false) }
-    val laneNumber = remember { mutableStateOf(1) }
+    val laneNumber = remember { mutableIntStateOf(1) }
     val userEmail = authViewModel.currentUser.value!!.email
     val currentUser = authViewModel.currentUser.collectAsState()
     val scope = rememberCoroutineScope()
@@ -67,6 +65,17 @@ fun HomeView(
     val startSelectedTime = remember { mutableStateOf<String?>(null) }
     val endSelectedTime = remember { mutableStateOf<String?>(null) }
     val reserved = bookingViewModel.reserved.collectAsState()
+
+    LaunchedEffect(selectedDate.value, startSelectedTime.value, endSelectedTime.value, laneNumber.intValue) {
+        if (selectedDate.value != null && startSelectedTime.value != null && endSelectedTime.value != null) {
+            bookingViewModel.isLaneReserved(
+                selectedDate.value.toString(),
+                startSelectedTime.value.toString(),
+                endSelectedTime.value.toString(),
+                laneNumber.intValue
+            )
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -159,8 +168,8 @@ fun HomeView(
                     )
                     IconButton(
                         onClick = {
-                            if (laneNumber.value > 1){
-                                laneNumber.value--
+                            if (laneNumber.intValue > 1){
+                                laneNumber.intValue--
                             }
                         }
                     ) {
@@ -173,7 +182,7 @@ fun HomeView(
                     }
                     Spacer(modifier = Modifier.width(3.dp))
                     Text(
-                        text = laneNumber.value.toString(),
+                        text = laneNumber.intValue.toString(),
                         modifier = Modifier.align(Alignment.CenterVertically),
                         color = MainColor,
                         fontSize = 20.sp
@@ -181,8 +190,8 @@ fun HomeView(
                     Spacer(modifier = Modifier.width(3.dp))
                     IconButton(
                         onClick = {
-                            if (laneNumber.value < 5){
-                                laneNumber.value++
+                            if (laneNumber.intValue < 5){
+                                laneNumber.intValue++
                             }
                         }
                     ) {
@@ -211,7 +220,13 @@ fun HomeView(
                         color = Color.Blue
                     )
                 }
-                // Кнопка "Забронировать"
+                if (selectedDate.value != null && startSelectedTime.value != null && endSelectedTime.value != null) {
+                    Text(
+                        text = if (reserved.value) "Дорожка доступна" else "Дорожка занята",
+                        color = if (reserved.value) Color.Green else Color.Red,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
                 Button(
                     onClick = {
                         if (!startSelectedTime.value.isNullOrEmpty() && !endSelectedTime.value.isNullOrEmpty() && !selectedDate.value.toString().isNullOrEmpty()) {
@@ -220,7 +235,7 @@ fun HomeView(
                                     selectedDate.value.toString(),
                                     startSelectedTime.value.toString(),
                                     endSelectedTime.value.toString(),
-                                    laneNumber.value
+                                    laneNumber.intValue
                                 )
                                 if (reserved.value) {
                                     currentUser.value?.let {
@@ -228,7 +243,7 @@ fun HomeView(
                                             selectedDate.value.toString(),
                                             startSelectedTime.value.toString(),
                                             endSelectedTime.value.toString(),
-                                            laneNumber.value,
+                                            laneNumber.intValue,
                                             userEmail.toString(),
                                             it
                                         )

@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.rollingstones.model.HistoryReservedModel
-import com.example.rollingstones.ui.theme.MainColor
 
 @Composable
 fun HistoryItem(

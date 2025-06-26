@@ -1,5 +1,6 @@
 package com.example.rollingstones.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rollingstones.model.BookingModel
@@ -10,11 +11,12 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AdminViewModel(): ViewModel() {
+class AdminViewModel: ViewModel() {
+
     private val _bookings = MutableStateFlow<List<BookingModel>>(listOf())
     val booking = _bookings.asStateFlow()
-    private val _isDelete = MutableStateFlow<Boolean>(false)
-    val isDelete = _isDelete.asStateFlow()
+
+    private val _isDelete = MutableStateFlow(false)
 
     fun allBookings(){
         viewModelScope.launch {
@@ -52,7 +54,7 @@ class AdminViewModel(): ViewModel() {
                 expiredBookings.forEach { deleteBookings(it.id) }
                 _bookings.value = validBookings
             } catch (e: Exception) {
-
+                Log.e("AdminViewModel", e.toString())
             }
         }
     }

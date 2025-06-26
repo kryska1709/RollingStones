@@ -1,5 +1,6 @@
 package com.example.rollingstones.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import com.example.rollingstones.ui.theme.DarkButtonColor
 import com.example.rollingstones.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun SideBarMenu(
     navController: NavController,
