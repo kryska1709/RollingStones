@@ -2,6 +2,7 @@ package com.example.rollingstones.components
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -78,19 +79,23 @@ fun BookingItems(
                     fontFamily = Bibliothy
                 )
             }
-            Button(
-                modifier = Modifier.wrapContentWidth(),
-                onClick = { enabled.value = true },
-                colors = ButtonDefaults.buttonColors(MainColor),
-                shape = ButtonDefaults.shape,
-                elevation = ButtonDefaults.buttonElevation(4.dp)
+            Box(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "отменить",
-                    fontSize = 12.sp,
-                    color = Color.White,
-                    maxLines = 1
-                )
+                Button(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    onClick = { enabled.value = true },
+                    colors = ButtonDefaults.buttonColors(MainColor),
+                    shape = ButtonDefaults.shape,
+                    elevation = ButtonDefaults.buttonElevation(4.dp)
+                ) {
+                    Text(
+                        text = "отменить",
+                        fontSize = 12.sp,
+                        color = Color.White,
+                        maxLines = 1
+                    )
+                }
             }
         }
     }
